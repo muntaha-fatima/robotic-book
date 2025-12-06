@@ -1,0 +1,71 @@
+---
+id: capstone-project
+title: Capstone Project - The Autonomous Humanoid
+slug: /modules/vla/capstone-project
+---
+
+## Overview
+
+The Capstone Project is the culmination of all the knowledge and skills gained throughout the modules. It provides a practical application of the concepts of ROS 2, digital twin simulation (Gazebo/Unity), NVIDIA Isaac AI, and Vision-Language-Action (VLA) capabilities. The goal is to develop a simulated humanoid robot that can autonomously execute complex tasks based on natural language commands.
+
+## Project Goal
+
+To create a simulated autonomous humanoid robot capable of:
+1.  **Receiving voice commands**: Understanding human instructions through speech recognition (e.g., using OpenAI Whisper).
+2.  **Cognitive planning**: Translating natural language goals into a sequence of executable robot actions using Large Language Models (LLMs).
+3.  **Path planning and navigation**: Autonomously moving through a simulated environment, avoiding obstacles, and reaching target locations (leveraging Nav2 and potentially Isaac ROS).
+4.  **Object identification and manipulation**: Using computer vision to identify specific objects and interacting with them (e.g., picking up, placing down).
+5.  **Integrating all modules**: Demonstrating a cohesive system where perception, planning, and action are seamlessly orchestrated.
+
+## Key Phases
+
+### 1. Speech-to-Text Integration
+
+-   Implement an audio pipeline to capture speech.
+-   Utilize OpenAI Whisper to convert spoken commands into text.
+-   Ensure robustness to different voices and environmental conditions.
+
+### 2. LLM-based Task Planning
+
+-   Design prompts for an LLM to decompose a high-level natural language command (e.g., "Make me a coffee") into a sequence of low-level robot actions.
+-   Define a set of robot action primitives (e.g., `navigate_to_location`, `detect_object`, `grasp_object`, `open_door`).
+-   Parse the LLM's output (e.g., JSON) into a format executable by the robot's control system.
+
+### 3. Simulation Environment Setup
+
+-   Set up a realistic simulation environment in Gazebo or Unity (or Isaac Sim) for the humanoid robot.
+-   Integrate the humanoid robot model (URDF) into the simulation.
+-   Populate the environment with objects relevant to the capstone tasks.
+
+### 4. Perception and Navigation
+
+-   Implement computer vision algorithms for object detection and recognition.
+-   Integrate ROS 2 Nav2 for global and local path planning within the simulated environment.
+-   Utilize simulated sensors (LiDAR, depth cameras) for obstacle avoidance and localization.
+-   Consider applying Isaac ROS acceleration for perception tasks.
+
+### 5. Manipulation and Control
+
+-   Develop control strategies for the humanoid robot's manipulators (arms, hands) to interact with objects.
+-   Address challenges related to inverse kinematics, grasp planning, and force control in simulation.
+-   Ensure stability and balance during manipulation tasks.
+
+## Example Task Flow
+
+**Voice Command**: "Robot, please clear the table and put the empty cup in the sink."
+
+1.  **Whisper**: "Robot, please clear the table and put the empty cup in the sink."
+2.  **LLM Planning**:
+    *   `action: navigate_to_location, parameters: { location: "table" }`
+    *   `action: detect_object, parameters: { object_type: "empty cup" }`
+    *   `action: grasp_object, parameters: { object_name: "empty cup" }`
+    *   `action: navigate_to_location, parameters: { location: "sink" }`
+    *   `action: place_object, parameters: { object_name: "empty cup" }`
+    *   `action: navigate_to_location, parameters: { location: "home_position" }`
+3.  **ROS 2 Execution**: Each planned action is translated into ROS 2 commands, executed by the simulated humanoid, utilizing its navigation, perception, and manipulation capabilities.
+
+## Further Reading
+
+-   [ROS 2 Tutorials](https://docs.ros.org/en/humble/index.html)
+-   [OpenAI Blog](https://openai.com/blog)
+-   [NVIDIA Robotics Resources](https://www.nvidia.com/en-us/deep-learning-ai/solutions/robotics/)

@@ -1,0 +1,44 @@
+---
+id: isaac-ros
+title: Isaac ROS
+slug: /modules/nvidia-isaac/isaac-ros
+---
+
+## Overview
+
+**Isaac ROS** is a collection of hardware-accelerated packages that extend ROS 2, making it easier for robotics developers to build high-performance, AI-enabled robots. By leveraging NVIDIA GPUs and other hardware, Isaac ROS significantly boosts the performance of perception, navigation, and manipulation tasks.
+
+## Key Concepts
+
+### Hardware Acceleration for ROS 2
+
+-   **GPU Optimization**: Isaac ROS components are optimized to run on NVIDIA GPUs, offloading computationally intensive tasks from the CPU and drastically reducing latency.
+-   **Deep Integration**: Provides ROS 2 nodes and APIs that integrate seamlessly with existing ROS 2 applications, making it easy to drop in accelerated capabilities.
+-   **Real-time Performance**: Designed for applications requiring real-time processing, such as autonomous navigation, object detection, and robot manipulation.
+
+### VSLAM (Visual Simultaneous Localization and Mapping)
+
+-   **Visual Odometry**: Isaac ROS offers accelerated solutions for visual odometry, which estimates the robot's pose by analyzing sequential camera images.
+-   **Mapping**: It includes modules for building 2D or 3D maps of the environment from sensor data, essential for navigation.
+-   **Loop Closure**: Advanced algorithms help recognize previously visited locations to correct for accumulated errors in localization and mapping.
+
+### Navigation and Perception
+
+-   **Perception Modules**: Accelerated components for tasks like stereo depth estimation, object detection, semantic segmentation, and tracking, providing robots with a richer understanding of their surroundings.
+-   **Path Planning**: While Nav2 provides the high-level planning, Isaac ROS can accelerate underlying computations for tasks like costmap generation or specific motion primitive calculations.
+-   **Manipulation**: Components supporting tasks like grasping and inverse kinematics can also benefit from GPU acceleration.
+
+## Example
+
+While a full code example would be extensive, a conceptual outline of using an Isaac ROS VSLAM node might look like this:
+
+1.  **Sensor Input**: A camera driver node publishes image data (e.g., from a stereo camera).
+2.  **Isaac ROS VSLAM Node**: An Isaac ROS VSLAM node subscribes to these image topics.
+3.  **GPU Processing**: The VSLAM node performs hardware-accelerated visual odometry and mapping on the GPU.
+4.  **Output**: The VSLAM node publishes the robot's estimated pose (`nav_msgs/Odometry` or `geometry_msgs/PoseStamped`) and potentially map data (`sensor_msgs/PointCloud2` or `nav_msgs/OccupancyGrid`) to other ROS 2 topics. Other nodes (e.g., Nav2) can then consume this data for navigation.
+
+## Further Reading
+
+-   [NVIDIA Isaac ROS](https://developer.nvidia.com/isaac-ros)
+-   [Isaac ROS Documentation on GitHub](https://github.com/NVIDIA-AI-IOT/isaac_ros_docs)
+-   [ROS 2 Navigation (Nav2)](https://navigation.ros.org/)

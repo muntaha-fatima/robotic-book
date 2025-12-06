@@ -1,0 +1,72 @@
+---
+id: urdf-humanoids
+title: Understanding URDF for Humanoids
+slug: /modules/ros2/urdf-humanoids
+---
+
+## Overview
+
+This section introduces **URDF (Unified Robot Description Format)**, an XML format used in ROS 2 to describe the physical and kinematic properties of a robot. Understanding URDF is crucial for simulating robots, path planning, and visualizing their structure, especially for complex humanoid robots.
+
+## Key Concepts
+
+### What is URDF?
+
+-   **XML-based Description**: URDF defines a robot as a set of rigid bodies (links) connected by joints.
+-   **Links**: Represent the physical segments of the robot (e.g., torso, upper arm, forearm, hand). Each link has mass, inertia, visual (appearance), and collision (physical interaction) properties.
+-   **Joints**: Define the kinematic and dynamic properties of the connections between links (e.g., revolute, prismatic, fixed). They specify how links move relative to each other.
+-   **Kinematics**: Describes the motion of a robot without considering the forces that cause the motion. URDF helps define forward and inverse kinematics.
+-   **Dynamics**: Describes the relationship between forces and motion. URDF provides properties like mass and inertia for dynamic simulations.
+
+### Components of a URDF File
+
+A typical URDF file includes:
+-   `<robot>` tag: The root element, defining the robot's name.
+-   `<link>` tags: Describe each rigid body.
+    -   `<visual>`: Defines the graphical representation (e.g., geometry, color).
+    -   `<collision>`: Defines the collision geometry (used for physics simulation).
+    -   `<inertial>`: Defines the mass and inertia tensor.
+-   `<joint>` tags: Describe the connections between links.
+    -   `type`: (e.g., `revolute`, `continuous`, `prismatic`, `fixed`).
+    -   `<origin>`: Specifies the transform from the parent link to the child link.
+    -   `<axis>`: Defines the axis of rotation for revolute/continuous joints or translation for prismatic joints.
+    -   `<limit>`: Specifies the joint's movement limits (for revolute/prismatic).
+
+### URDF for Humanoid Robots
+
+Humanoid robots are particularly complex to describe in URDF due to their many degrees of freedom and intricate kinematic chains (e.g., legs, arms, spine, head).
+-   **Hierarchical Structure**: Humanoids typically have a complex tree-like structure, starting from a base link (e.g., pelvis) and branching out to limbs.
+-   **Inverse Kinematics**: Essential for humanoids to perform tasks like grasping or walking, where the desired end-effector position is known, and the joint angles need to be calculated.
+-   **Collision Models**: Crucial for humanoids to interact with the environment and avoid self-collisions.
+
+## Example
+
+```xml
+<!-- Example: Simple URDF for a robot link -->
+<robot name="my_robot">
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.6 0.4 0.2"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 0.8 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.6 0.4 0.2"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="10"/>
+      <origin xyz="0 0 0"/>
+      <inertia ixx="1" ixy="0" ixz="0" iyy="1" iyz="0" iyz="0" izz="1"/>
+    </inertial>
+  </link>
+</robot>
+```
+## Further Reading
+
+-   [URDF Tutorial](http://wiki.ros.org/urdf/Tutorials)
+-   [Creating a URDF for a Humanoid Robot](https://www.youtube.com/watch?v=F07pY-Q-9_Q) (Conceptual YouTube Link)

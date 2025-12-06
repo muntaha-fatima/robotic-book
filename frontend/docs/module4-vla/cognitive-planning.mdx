@@ -1,0 +1,39 @@
+---
+id: cognitive-planning
+title: Cognitive Planning with LLMs
+slug: /modules/vla/cognitive-planning
+---
+
+import CodeBlock from '@theme/CodeBlock';
+
+## Overview
+
+This section explores how **Large Language Models (LLMs)** can be leveraged for high-level **cognitive planning** in robotics. The goal is to translate abstract natural language goals (e.g., "Clean the room," "Make coffee") into a concrete sequence of executable robot actions that can be understood and executed via ROS 2 commands.
+
+## Key Concepts
+
+### LLMs as Task Planners
+
+-   **Goal Decomposition**: LLMs can break down a complex, high-level task into a series of smaller, more manageable sub-tasks.
+-   **Common Sense Reasoning**: LLMs possess vast amounts of world knowledge, enabling them to infer logical steps and necessary conditions for completing tasks, even if not explicitly stated.
+-   **Contextual Understanding**: They can interpret the nuances of natural language commands, adapting plans based on context or prior interactions.
+
+### Translating Natural Language to Robot Actions
+
+-   **Action Primitives**: The robot system needs a predefined set of "action primitives" – low-level functions that the robot can actually perform (e.g., `move_to_location`, `pick_up_object`, `open_gripper`).
+-   **Prompt Engineering**: The core challenge lies in designing effective prompts for the LLM that guide it to output a sequence of these action primitives, along with their necessary parameters, in a structured format (e.g., JSON).
+-   **Feedback Loop**: A robust system would include a feedback loop where the robot executes actions, observes results, and potentially asks the LLM for corrections or refinements if a plan fails or needs adaptation.
+
+### Integration with ROS 2
+
+-   The output from the LLM (e.g., a JSON list of actions) needs to be parsed and translated into ROS 2 commands. This involves:
+    -   Calling ROS 2 services for immediate actions.
+    -   Publishing messages to ROS 2 topics to initiate continuous actions.
+    -   Interfacing with existing ROS 2 navigation or manipulation stacks.
+
+## Example
+
+## Further Reading
+
+-   [Robotics with LLMs (e.g., SayCan)](https://ai.googleblog.com/2022/06/robot-transformer-for-mobile.html)
+-   [LLM-based Robotic Planning Research](https://scholar.google.com/scholar?q=llm+robot+planning)

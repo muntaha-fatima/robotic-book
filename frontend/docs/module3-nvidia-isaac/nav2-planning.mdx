@@ -1,0 +1,48 @@
+---
+id: nav2-planning
+title: Nav2 - Path Planning for Humanoids
+slug: /modules/nvidia-isaac/nav2-planning
+---
+
+## Overview
+
+**Nav2** is the ROS 2 navigation stack, providing tools for autonomous navigation of mobile robots. This section focuses on adapting and extending Nav2 for the unique challenges presented by **bipedal humanoid movement**, including maintaining balance, navigating complex terrains, and executing dynamic locomotion.
+
+## Key Concepts
+
+### Nav2 Architecture Review
+
+-   **Modular Design**: Nav2 is comprised of several modular nodes, including global planners, local planners, costmaps, and recovery behaviors.
+-   **Global Planner**: Generates a coarse, collision-free path from a start to a goal pose in a static or slowly changing environment.
+-   **Local Planner**: Follows the global path while avoiding dynamic obstacles and handling unexpected events in real-time.
+-   **Costmaps**: 2D occupancy grids that represent the environment, including obstacles and areas of varying traversability.
+
+### Challenges for Bipedal Humanoid Navigation
+
+-   **Balance and Stability**: Unlike wheeled robots, humanoids must actively maintain balance during movement. This requires sophisticated control systems integrated with locomotion planning.
+-   **Complex Locomotion**: Walking, stepping over obstacles, climbing stairs, and adapting gaits to uneven terrain are much more complex than simple wheeled motion.
+-   **Higher Degrees of Freedom**: Humanoids have many more joints, leading to a significantly larger state space for planning.
+-   **Limited Footprint**: The contact area with the ground is much smaller, making stability a continuous concern.
+
+### Adapting Nav2 for Humanoids
+
+-   **Custom Global Planners**: Develop or adapt global planners to consider humanoid-specific constraints, such as foot placement, reachable footsteps, and stability margins.
+-   **Humanoid-Specific Local Planners**: Replace or modify standard local planners (e.g., DWA, TEB) with those capable of generating stable and feasible walking gaits, potentially integrating with whole-body control.
+-   **3D Costmaps/Occupancy Grids**: For humanoids navigating complex environments with varying elevations, 3D representations of the environment (or multi-layered 2D costmaps) become critical.
+-   **Integration with Whole-Body Control**: Nav2's output (e.g., target velocities or poses) needs to be translated into joint commands by a whole-body controller that ensures balance and stability. This typically involves external control loops outside of standard Nav2.
+-   **Footstep Planning**: Incorporate dedicated footstep planners that determine discrete foot placements for stable walking and obstacle traversal.
+
+## Example
+
+Adapting Nav2 for humanoids often involves significant customization of its plugins or integration with external locomotion and balance controllers. A typical flow might be:
+
+1.  **Global Plan**: Nav2's global planner generates a path for the robot's center of mass or base link.
+2.  **Footstep Generation**: An external footstep planner takes the global path and generates a sequence of stable foot placements.
+3.  **Local Plan/Whole-Body Control**: A specialized local planner or whole-body controller converts these footsteps and the global path into joint trajectories, ensuring dynamic balance throughout the motion.
+4.  **Execution**: The robot's motor controllers execute the joint trajectories.
+
+## Further Reading
+
+-   [ROS 2 Nav2 Documentation](https://navigation.ros.org/)
+-   [Humanoid Robot Locomotion (Research Papers)](https://scholar.google.com/scholar?q=humanoid+robot+locomotion+planning)
+-   [Whole-Body Control for Humanoids (Overview)](https://ieeexplore.ieee.org/document/7359556) (Conceptual link to relevant topic)

@@ -1,0 +1,42 @@
+---
+id: voice-to-action
+title: Voice-to-Action with OpenAI Whisper
+slug: /modules/vla/voice-to-action
+---
+
+## Overview
+
+This section focuses on enabling robots to understand spoken commands through **Voice-to-Action** systems, primarily utilizing **OpenAI Whisper**. Whisper is a versatile speech-to-text model that can accurately transcribe human speech, forming a critical component for natural language interaction with humanoid robots.
+
+## Key Concepts
+
+### OpenAI Whisper
+
+-   **Speech-to-Text Model**: Whisper is an open-source neural network that can transcribe audio into text in multiple languages and translate those languages into English.
+-   **Robustness**: It is trained on a large and diverse dataset, making it robust to accents, background noise, and technical jargon.
+-   **Applications in Robotics**:
+    -   **Command Interpretation**: Translate spoken instructions from a human operator into text that a robot's cognitive system can process.
+    -   **Dialogue Systems**: Enable more natural and intuitive human-robot conversations.
+    -   **Environmental Understanding**: Process ambient speech in the robot's environment for contextual awareness.
+
+### Integrating Whisper with Robotic Systems
+
+-   **Audio Capture**: The robot needs a microphone array to capture audio from its environment.
+-   **Whisper API/Model Integration**: The captured audio is then fed into the Whisper model (either locally or via an API) for transcription.
+-   **Text Processing**: The transcribed text is sent to a **Natural Language Understanding (NLU)** component (often an LLM) to extract intent and relevant entities (e.g., "move to the kitchen", "pick up the red cup").
+-   **Action Generation**: The NLU's output is then translated into executable robot actions via a cognitive planning system (as discussed in the next section).
+
+## Example Scenario
+
+A human says, "Robot, please bring me the wrench from the toolbox."
+
+1.  **Audio Capture**: Robot's microphones record the command.
+2.  **Whisper Transcription**: Whisper transcribes the audio into the text "Robot, please bring me the wrench from the toolbox."
+3.  **NLU/LLM Processing**: An LLM processes this text and identifies the intent (`bring object`), the object (`wrench`), and the location (`toolbox`).
+4.  **Action Planning**: The planning system generates a sequence of ROS 2 actions to fulfill the command (e.g., `navigate_to(toolbox)`, `grasp_object(wrench)`, `navigate_to(human)`, `release_object(wrench)`).
+
+## Further Reading
+
+-   [OpenAI Whisper GitHub Repository](https://github.com/openai/whisper)
+-   [Whisper Model Card](https://openai.com/research/whisper)
+-   [ROS 2 Audio Processing (Conceptual)](https://robotics.stackexchange.com/questions/ask) (Search for ROS 2 audio processing or speech recognition packages)

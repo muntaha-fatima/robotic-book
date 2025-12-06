@@ -1,0 +1,39 @@
+---
+id: python-agents-rclpy
+title: Bridging Python Agents to ROS Controllers
+slug: /modules/ros2/python-agents-rclpy
+---
+
+## Overview
+
+This section covers how to integrate Python-based AI agents with ROS 2, enabling them to send commands to and receive data from robot controllers. The primary tool for this integration is `rclpy`, the Python client library for ROS 2.
+
+## Key Concepts
+
+### `rclpy` - ROS 2 Python Client Library
+
+-   `rclpy` provides the necessary APIs to create ROS 2 nodes, publishers, subscribers, clients, and servers in Python. It acts as the bridge between your Python AI logic and the underlying ROS 2 communication middleware.
+
+### Agent-Controller Interaction
+
+-   **Perception Input**: Python agents can subscribe to ROS 2 topics publishing sensor data (e.g., camera feeds, LiDAR scans, IMU data) to perceive the robot's environment.
+-   **Action Output**: Agents can publish messages to ROS 2 topics that control robot actuators (e.g., motor commands, joint positions) or call ROS 2 services to trigger higher-level robot behaviors.
+
+### Design Considerations
+
+-   **Real-time vs. Non-real-time**: While Python is not typically used for hard real-time control, it is excellent for high-level decision-making, planning, and AI model inference. Critical low-level control loops are usually implemented in C++.
+-   **Message Design**: Define clear and efficient ROS 2 message types (`.msg` files) for communication between your Python agent and other ROS 2 components.
+-   **Concurrency**: Python's Global Interpreter Lock (GIL) means true parallel execution is limited for CPU-bound tasks. Use asynchronous programming (e.g., `asyncio` with `rclpy` executors) or multiprocessing for better performance if your agent involves heavy computation.
+
+## Example Scenario
+
+Imagine a Python AI agent that needs to tell a mobile robot to navigate to a specific point.
+
+1.  **Agent Perception**: The Python agent subscribes to a `/robot/pose` topic (publishing `geometry_msgs/PoseStamped`) to know the robot's current location.
+2.  **Agent Decision**: Based on its internal logic, the AI agent decides on a target `(x, y)` coordinate.
+3.  **Agent Action**: The Python agent publishes a message to a `/robot/cmd_vel` topic (publishing `geometry_msgs/Twist`) or calls a `/navigate_to_pose` service (using `nav2_msgs/NavigateToPose` service type) to command the robot to move.
+
+## Further Reading
+
+-   [ROS 2 `rclpy` Documentation](https://docs.ros.org/en/humble/Tutorials/Beginner-CLI-Tools/Writing-A-Simple-Publisher-And-Subscriber-Python.html)
+-   [ROS 2 `nav2` Documentation](https://navigation.ros.org/)

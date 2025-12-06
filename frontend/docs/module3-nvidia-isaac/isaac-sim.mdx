@@ -1,0 +1,58 @@
+---
+id: isaac-sim
+title: NVIDIA Isaac Sim
+slug: /modules/nvidia-isaac/isaac-sim
+---
+
+## Overview
+
+**NVIDIA Isaac Sim** is a scalable robotics simulation application and synthetic data generation tool built on NVIDIA Omniverse. It's designed to power the development, testing, and management of AI-based robots by providing a highly realistic and physically accurate virtual environment.
+
+## Key Concepts
+
+### Photorealistic Simulation
+
+-   **Omniverse Integration**: Isaac Sim leverages the Universal Scene Description (USD) framework and NVIDIA Omniverse, enabling collaborative 3D workflows and high-fidelity rendering.
+-   **Physically Accurate Rendering**: The simulator provides realistic lighting, materials, and physics, making it suitable for training perception models that rely on visual data.
+-   **Scalability**: Isaac Sim can be run on a single workstation or scaled across multiple GPUs and cloud environments for large-scale simulations.
+
+### Synthetic Data Generation (SDG)
+
+-   **Bridging the Reality Gap**: SDG is crucial for training AI models, especially when real-world data is scarce, expensive, or dangerous to collect. Isaac Sim can generate vast amounts of diverse, labeled data.
+-   **Domain Randomization**: By randomizing aspects like textures, lighting, object positions, and camera parameters, SDG helps create models that generalize better to real-world conditions.
+-   **Annotation**: Isaac Sim can automatically generate precise ground-truth annotations (e.g., bounding boxes, segmentation masks, depth maps) for every frame, accelerating the AI training pipeline.
+
+### Robot Development and Testing
+
+-   **Digital Twin Creation**: Build and test digital twins of robots and their environments.
+-   **Sensor Simulation**: Simulate various sensors (cameras, LiDAR, IMUs, force sensors) with configurable noise and imperfections.
+-   **ROS 2 Integration**: Seamless integration with ROS 2 allows developers to use existing ROS 2 stacks for robot control and navigation within the simulation.
+
+## Example
+
+```python
+# Example: Conceptual Isaac Sim Python script for scene setup
+import omni.usd
+import omni.kit.commands
+import omni.isaac.core.utils.nucleus as nucleus_utils
+
+# Create a new stage
+omni.usd.get_context().new_stage()
+
+# Add a simple ground plane
+omni.kit.commands.execute("CreateGroundPlaneCommand")
+
+# Add a simple cube
+prim_path = "/World/Cube"
+omni.kit.commands.execute("CreateCubeCommand",
+    prim_path=prim_path,
+    position=(0, 0, 0.5),
+    scale=(0.5, 0.5, 0.5))
+
+print(f"Cube created at {prim_path}")
+```
+
+## Further Reading
+
+-   [Isaac Sim Documentation](https://docs.omniverse.nvidia.com/app_isaacsim/app_isaacsim/overview.html)
+-   [NVIDIA Omniverse](https://www.nvidia.com/en-us/omniverse/)
