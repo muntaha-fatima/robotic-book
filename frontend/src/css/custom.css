@@ -4,27 +4,310 @@
  * work well for content-centric websites.
  */
 
-/* You can override the default Infima variables here. */
+/* Enhanced color palette for Physical AI Humanoid Robotics */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  /* Primary colors inspired by robotics and tech */
+  --ifm-color-primary: #1a73e8; /* Google-inspired blue for tech feel */
+  --ifm-color-primary-dark: #1666cc;
+  --ifm-color-primary-darker: #145cb9;
+  --ifm-color-primary-darkest: #104aa6;
+  --ifm-color-primary-light: #3d8afe;
+  --ifm-color-primary-lighter: #5a9bff;
+  --ifm-color-primary-lightest: #82b3ff;
+
+  /* Accent colors */
+  --robotic-accent-1: #00bfa5; /* Teal for secondary actions */
+  --robotic-accent-2: #ff6d00; /* Orange for highlights */
+  --robotic-accent-3: #6200ea; /* Purple for special features */
+
+  /* Neutral colors */
+  --robotic-gray-100: #f8f9fa;
+  --robotic-gray-200: #e9ecef;
+  --robotic-gray-300: #dee2e6;
+  --robotic-gray-500: #adb5bd;
+  --robotic-gray-700: #495057;
+  --robotic-gray-800: #343a40;
+  --robotic-gray-900: #212529;
+
+  /* Typography */
+  --ifm-font-family-base: 'Inter', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --ifm-heading-font-weight: 600;
+  --ifm-h1-font-size: 3rem;
+  --ifm-h2-font-size: 2.25rem;
+  --ifm-h3-font-size: 1.75rem;
+  --ifm-h4-font-size: 1.5rem;
+
+  /* Spacing */
+  --ifm-spacing-vertical: 2rem;
+  --ifm-spacing-horizontal: 2rem;
+
+  /* Border radius */
+  --ifm-global-radius: 12px;
+  --ifm-button-border-radius: 8px;
+
+  /* Shadows */
+  --ifm-global-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  --ifm-card-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+
+  /* Code */
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  /* Custom robotic theme additions */
+  --robotic-gradient-primary: linear-gradient(135deg, var(--ifm-color-primary), var(--robotic-accent-3));
+  --robotic-gradient-secondary: linear-gradient(135deg, var(--robotic-accent-1), var(--robotic-accent-2));
+  --robotic-transition: all 0.3s ease;
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
+/* Dark mode enhancements */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
+  --ifm-color-primary: #4285f4;
+  --ifm-color-primary-dark: #3367d6;
+  --ifm-color-primary-darker: #2d57c3;
+  --ifm-color-primary-darkest: #2446a2;
+  --ifm-color-primary-light: #5a95f5;
+  --ifm-color-primary-lighter: #73a6f7;
+  --ifm-color-primary-lightest: #8cbcfc;
+
+  /* Dark mode specific colors */
+  --robotic-gray-100: #121212;
+  --robotic-gray-200: #1e1e1e;
+  --robotic-gray-300: #2a2a2a;
+  --robotic-gray-500: #4a4a4a;
+  --robotic-gray-700: #a0a0a0;
+  --robotic-gray-800: #c0c0c0;
+  --robotic-gray-900: #e0e0e0;
+
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Custom typography enhancements */
+.hero__title {
+  font-size: var(--ifm-h1-font-size) !important;
+  font-weight: var(--ifm-heading-font-weight) !important;
+  line-height: 1.2;
+}
+
+.hero__subtitle {
+  font-size: 1.25rem;
+  opacity: 0.9;
+}
+
+/* Card styling */
+.card {
+  transition: var(--robotic-transition);
+  border: none;
+  box-shadow: var(--ifm-card-shadow);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Button styling */
+.button {
+  transition: var(--robotic-transition);
+  font-weight: 600;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Robotic-themed custom classes */
+.robotic-gradient-bg {
+  background: var(--robotic-gradient-primary);
+  color: white;
+}
+
+.robotic-gradient-text {
+  background: var(--robotic-gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.robotic-card {
+  border-radius: var(--ifm-global-radius);
+  overflow: hidden;
+  transition: var(--robotic-transition);
+}
+
+.robotic-shadow {
+  box-shadow: var(--ifm-global-shadow);
+}
+
+.robotic-hover-lift {
+  transition: var(--robotic-transition);
+}
+
+.robotic-hover-lift:hover {
+  transform: translateY(-5px);
+}
+
+/* Animations and micro-interactions */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(26, 115, 232, 0.7);
+  }
+  70% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 10px rgba(26, 115, 232, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(26, 115, 232, 0);
+  }
+}
+
+.robotic-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.robotic-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.robotic-pulse {
+  animation: pulse 2s infinite;
+}
+
+.robotic-delay-1 {
+  animation-delay: 0.1s;
+}
+
+.robotic-delay-2 {
+  animation-delay: 0.2s;
+}
+
+.robotic-delay-3 {
+  animation-delay: 0.3s;
+}
+
+.robotic-delay-4 {
+  animation-delay: 0.4s;
+}
+
+.robotic-delay-5 {
+  animation-delay: 0.5s;
+}
+
+/* Hover effects for interactive elements */
+.robotic-hover-glow {
+  transition: var(--robotic-transition);
+}
+
+.robotic-hover-glow:hover {
+  box-shadow: 0 10px 25px rgba(26, 115, 232, 0.3);
+}
+
+/* Loading animation */
+.robotic-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Ripple effect for buttons */
+.robotic-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.robotic-ripple::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  opacity: 0;
+  transition: all 0.5s ease;
+  transform: translate(-50%, -50%);
+}
+
+.robotic-ripple:active::after {
+  width: 200px;
+  height: 200px;
+  opacity: 1;
+  transition: 0s;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .hero__title {
+    font-size: 2.5rem !important;
+  }
+
+  .robotic-card {
+    margin-bottom: 15px;
+  }
+
+  .card {
+    margin-bottom: 15px;
+  }
+
+  .button {
+    margin: 5px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero__title {
+    font-size: 2rem !important;
+  }
+
+  .hero__subtitle {
+    font-size: 1rem;
+  }
+
+  .container {
+    padding: 0 15px;
+  }
+
+  .robotic-card {
+    padding: 20px 15px;
+  }
+
+  .features {
+    padding: 1rem 0;
+  }
 }

@@ -43,10 +43,30 @@ This directory contains the FastAPI application that serves as the backend for t
 -   `/signup` (POST): Register a new user.
 -   `/login` (POST): Authenticate a user and get a token.
 -   `/users/me` (GET): Get current user information (requires authentication).
--   `/embeddings/upsert` (POST): Create Gemini embeddings and upsert to Qdrant.
--   `/rag/query` (POST): Perform semantic search in Qdrant and generate LLM answer.
+-   `/embeddings/upsert` (POST): Create embeddings and upsert to Qdrant.
+-   `/chat` (POST): Perform semantic search in Qdrant and generate LLM answer.
 -   `/translate` (POST): Translate text to Urdu using LLM.
 -   `/personalize` (POST): Rewrite text based on user profile using LLM.
+
+## Data Ingestion
+
+To populate the Qdrant database with content from the documentation, you can use the `ingest_data.py` script.
+
+1.  **Install necessary Python packages:**
+    ```bash
+    pip install requests python-dotenv
+    ```
+
+2.  **Ensure your backend server is running:**
+    ```bash
+    uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    ```
+
+3.  **Run the ingestion script:**
+    ```bash
+    python ingest_data.py
+    ```
+    You will be prompted for your backend username and password.
 
 ## Deployment
 

@@ -21,3 +21,11 @@
   align-items: center;
   justify-content: center;
 }
+
+.chatbotContainer {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+

@@ -1,0 +1,260 @@
+/* Modern Authentication UI Styles */
+
+/* Container Styles */
+.authContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+}
+
+.authCard {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 100%;
+  max-width: 450px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Header Styles */
+.authHeader {
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  padding: 30px;
+  text-align: center;
+  color: white;
+}
+
+.authHeader h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.2px;
+}
+
+.authHeader p {
+  font-size: 15px;
+  opacity: 0.9;
+  margin: 0;
+  font-weight: 300;
+}
+
+/* Form Styles */
+.authForm {
+  padding: 30px;
+}
+
+.authForm .formGroup {
+  margin-bottom: 20px;
+}
+
+.authForm label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.authForm input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #e1e5eb;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: #fafbfc;
+}
+
+.authForm input:focus {
+  outline: none;
+  border-color: #2575fc;
+  box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.15);
+  background-color: white;
+}
+
+.authForm input::placeholder {
+  color: #a0aec0;
+}
+
+/* Button Styles */
+.authButton {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-top: 10px;
+}
+
+.authButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(37, 117, 252, 0.3);
+}
+
+.authButton:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.authButton:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Link Styles */
+.authLinks {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.authLinks a {
+  color: #2575fc;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.authLinks a:hover {
+  color: #1a65e0;
+  text-decoration: underline;
+}
+
+/* Error and Success Message Styles */
+.errorMessage {
+  background-color: #fed7d7;
+  color: #c53030;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 15px;
+  font-size: 14px;
+  border-left: 4px solid #fc8181;
+}
+
+.successMessage {
+  background-color: #c6f6d5;
+  color: #2f855a;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 15px;
+  font-size: 14px;
+  border-left: 4px solid #68d391;
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 25px 0;
+  color: #718096;
+  font-size: 14px;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.divider::before {
+  margin-right: 10px;
+}
+
+.divider::after {
+  margin-left: 10px;
+}
+
+/* Social Login */
+.socialLogin {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.socialButton {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.socialButton:hover {
+  border-color: #cbd5e0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.socialButton img {
+  width: 18px;
+  height: 18px;
+}
+
+/* Password Strength Indicator */
+.passwordStrengthContainer {
+  margin-top: 5px;
+}
+
+.passwordStrengthBar {
+  height: 4px;
+  background-color: #e2e8f0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.passwordStrengthLevel {
+  height: 100%;
+  width: 0;
+  transition: width 0.3s, background-color 0.3s;
+}
+
+.strength-weak { background-color: #e53e3e; width: 33%; }
+.strength-medium { background-color: #d69e2e; width: 66%; }
+.strength-strong { background-color: #38a169; width: 100%; }
+
+.passwordStrengthText {
+  font-size: 12px;
+  margin-top: 4px;
+  color: #718096;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .authCard {
+    margin: 10px;
+    max-width: 100%;
+  }
+  
+  .authHeader {
+    padding: 25px 20px;
+  }
+  
+  .authForm {
+    padding: 25px 20px;
+  }
+  
+  .authHeader h2 {
+    font-size: 24px;
+  }
+}
