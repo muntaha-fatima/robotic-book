@@ -174,12 +174,23 @@ async def rag_query_endpoint(request: RagQueryRequest, current_user: dict = Depe
         embedder = get_cohere_embedder()
         query_embedding = embedder.embed_query(request.query)
 
-        # Perform vector search in Qdrant - try the traditional method which should exist
-        search_results = qdrant_client.search(
-            collection_name=collection_name,
-            query_vector=query_embedding,
-            limit=3,
-        )
+        # Perform vector search in Qdrant - check for newer API first
+        try:
+            search_results = qdrant_client.search(
+                collection_name=collection_name,
+                query_vector=query_embedding,
+                limit=3,
+            )
+        except AttributeError:
+            # Newer Qdrant client versions use query_points
+            search_results = qdrant_client.query_points(
+                collection_name=collection_name,
+                query=query_embedding,
+                limit=3,
+            )
+            # Handle QueryResponse object if needed
+            if hasattr(search_results, 'points'):
+                search_results = search_results.points
 
         # Extract context from search results
         context = " ".join([result.payload["text"] for result in search_results])
@@ -198,35 +209,6 @@ async def rag_query_endpoint(request: RagQueryRequest, current_user: dict = Depe
             context=context,
             sources=sources
         )
-    except AttributeError as e:
-        if "'QdrantClient' object has no attribute 'search'" in str(e):
-            print("Search method not found, trying query_points...")
-            # If search doesn't exist, use query_points as fallback
-            search_results = qdrant_client.query_points(
-                collection_name=collection_name,
-                query=query_embedding,
-                limit=3,
-            )
-
-            # Extract context from search results
-            context = " ".join([result.payload["text"] for result in search_results])
-
-            # Create source objects
-            sources = [
-                Source(
-                    text=result.payload["text"],
-                    score=result.score
-                ) for result in search_results
-            ]
-
-            # Return the context and search results for the RAG system
-            return RagResponse(
-                query=request.query,
-                context=context,
-                sources=sources
-            )
-        else:
-            raise
     except Exception as e:
         print(f"RAG query error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to process RAG query: {str(e)}")
@@ -246,34 +228,54 @@ async def chat_endpoint(request: ChatRequest, current_user: dict = Depends(get_c
 
     collection_name = "robotics-book"
     try:
+        print(f"Chat endpoint called with query: {request.query[:50]}...")
+
         # Generate query embedding using Cohere (using search_query input_type for queries)
         embedder = get_cohere_embedder()
         query_embedding = embedder.embed_query(request.query)
+        print(f"Query embedding generated, length: {len(query_embedding)}")
 
-        # Perform vector search in Qdrant - try the traditional method which should exist
-        search_results = qdrant_client.search(
-            collection_name=collection_name,
-            query_vector=query_embedding,
-            limit=3,
-        )
+        # Perform vector search in Qdrant - check for newer API first
+        try:
+            search_results = qdrant_client.search(
+                collection_name=collection_name,
+                query_vector=query_embedding,
+                limit=3,
+            )
+        except AttributeError:
+            # Newer Qdrant client versions use query_points
+            search_results = qdrant_client.query_points(
+                collection_name=collection_name,
+                query=query_embedding,
+                limit=3,
+            )
+            # Handle QueryResponse object if needed
+            if hasattr(search_results, 'points'):
+                search_results = search_results.points
+
+        print(f"Qdrant search completed, found {len(search_results)} results")
 
         # Extract context from search results
         context = " ".join([result.payload["text"] for result in search_results])
+        print(f"Context extracted, length: {len(context)}")
 
-        # Generate response using Cohere's generate endpoint
+        # Generate response using Cohere's chat endpoint (updated API)
         cohere_client = cohere.Client(cohere_api_key)
+        print("Cohere client created")
 
-        # Create a prompt with the context and user query
-        prompt = f"Based on the following context, answer the user's question.\n\nContext:\n{context}\n\nQuestion:\n{request.query}"
+        # Create a message with the context and user query for the chat API
+        message = f"Based on the following context, answer the user's question.\n\nContext:\n{context}\n\nQuestion:\n{request.query}"
+        print(f"Message prepared for Cohere, length: {len(message)}")
 
-        response = cohere_client.generate(
-            model='command-r-plus',
-            prompt=prompt,
+        response = cohere_client.chat(
+            message=message,
             max_tokens=500,
             temperature=0.7
         )
+        print("Cohere API call completed")
 
-        response_text = response.generations[0].text
+        response_text = response.text
+        print(f"Response received from Cohere, length: {len(response_text)}")
 
         return {
             "query": request.query,
@@ -286,49 +288,10 @@ async def chat_endpoint(request: ChatRequest, current_user: dict = Depends(get_c
                 } for result in search_results
             ]
         }
-    except AttributeError as e:
-        if "'QdrantClient' object has no attribute 'search'" in str(e):
-            print("Search method not found in chat, trying query_points...")
-            # If search doesn't exist, use query_points as fallback
-            search_results = qdrant_client.query_points(
-                collection_name=collection_name,
-                query=query_embedding,
-                limit=3,
-            )
-
-            # Extract context from search results
-            context = " ".join([result.payload["text"] for result in search_results])
-
-            # Generate response using Cohere's generate endpoint
-            cohere_client = cohere.Client(cohere_api_key)
-
-            # Create a prompt with the context and user query
-            prompt = f"Based on the following context, answer the user's question.\n\nContext:\n{context}\n\nQuestion:\n{request.query}"
-
-            response = cohere_client.generate(
-                model='command-r-plus',
-                prompt=prompt,
-                max_tokens=500,
-                temperature=0.7
-            )
-
-            response_text = response.generations[0].text
-
-            return {
-                "query": request.query,
-                "response": response_text,
-                "context": context,
-                "sources": [
-                    {
-                        "text": result.payload["text"],
-                        "score": result.score
-                    } for result in search_results
-                ]
-            }
-        else:
-            raise
     except Exception as e:
         print(f"Chat error: {str(e)}")
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Failed to process chat query: {str(e)}")
 
 # Server startup
