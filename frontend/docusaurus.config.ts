@@ -22,8 +22,8 @@ const config: Config = {
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'physical-Ai-Humanoid-robotics', // Usually your GitHub org/user name.
-  projectName: 'physical-ai-humanoid-robotics', // Usually your repo name.
+  organizationName: 'physical-Ai-Humanoid-Robotics', // Usually your GitHub org/user name.
+  projectName: 'physical-Ai-Humanoid-Robotics', // Usually your repo name.
 
   onBrokenLinks: 'throw',
 
