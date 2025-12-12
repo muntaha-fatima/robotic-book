@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import styles from './auth-styles.module.css';
 
-const Signup = () => {
+const SignupContent = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -11,15 +13,17 @@ const Signup = () => {
   const [passwordStrength, setPasswordStrength] = useState('');
 
   // Use environment variable or fallback to localhost
-  // If running from Docker, you might need to use the service name instead
-  const backendUrl = (window as any).env?.REACT_APP_BACKEND_URL ||
-    'http://localhost:8000';
+  const backendUrl = ExecutionEnvironment.canUseDOM
+    ? (window as any).env?.REACT_APP_BACKEND_URL || 'http://localhost:8000'
+    : 'http://localhost:8000';
 
   // Redirect if already logged in
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      window.location.href = '/'; // Redirect to homepage if already logged in
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        window.location.href = '/'; // Redirect to homepage if already logged in
+      }
     }
   }, []);
 
@@ -99,16 +103,22 @@ const Signup = () => {
       if (data.access_token || data.token) {
         // Store the token in localStorage
         const token = data.access_token || data.token;
-        localStorage.setItem('authToken', token);
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('authToken', token);
+        }
 
         // Redirect to home page after successful signup
-        window.location.href = '/';
+        if (typeof window !== 'undefined') {
+          window.location.href = '/';
+        }
       } else {
         setSuccessMessage("User registered successfully! You will be redirected to the login page.");
         // Optionally redirect to login after a short delay
-        setTimeout(() => {
-          window.location.href = '/login';
-        }, 2000);
+        if (typeof window !== 'undefined') {
+          setTimeout(() => {
+            window.location.href = '/login';
+          }, 2000);
+        }
       }
 
     } catch (err) {
@@ -214,7 +224,7 @@ const Signup = () => {
 
           <div className={styles.socialLogin}>
             <button type="button" className={styles.socialButton}>
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0ODAgNTEyIj48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMzQ1LjMgMi44QzM3OS45LTEuMSA0MTYuNS0uOSA0NDcuNyA0LjRjLTQuOS0yLjktMTEuNi00LjctMTguNC00LjctMzMuOCAwLTY1LjUgMTkuNS04NC4yIDQ5LjRjLTcuNC0xLjQtMTQuOS0yLjEtMjIuNS0yLjEtMzAuOSAwLTU3LjkgMTIuNS03Ny4xIDMxLjdjLTE5LjItMTkuMi00Ni4yLTMxLjctNzcuMS0zMS43Yy0xOC4zIDAtMzUuNyAzLjUtNTEuOSA5LjZjLTE3LjYtNi4xLTM3LjMtOS42LTU3LjktOS42QzEwLjMgMCAwIDEwLjMgMCAyMi43VjI4OWMwIDIwLjEgMTIuNiAzNy45IDMwLjUgNDYuNmMxLjgtLjQgMy42LS43IDUuNC0xLjFjMjMuMi01LjcgNDguNC04LjggNzQuMy04LjhjMjUuOSAwIDUxLjEgMy4xIDc0LjMgOC44YzEuOCAuNCAzLjYuNyA1LjQgMS4xYzE3LjktOC43IDMwLjUtMjYuNSAzMC41LTQ2LjZWMjIuN2MwLTQuNyAxLjctOS4yIDQuOC0xMi43YzMuMS0zLjUgNy40LTUuOCAxMi4xLTYuN2MzLjYtLjcgNy4zLS45IDEwLjktLjlzNy4zLjIgMTAuOS45YzQuNS45IDguOCAzLjIgMTIuMSA2LjdjMy4xIDMuNSA0LjggOC4xIDQuOCAxMi43VjI4OWMwIDEwLjIgMy43IDE5LjYgMTAuNSAyNi45YzM2LjUtMy45IDcyLjYtMy45IDEwOS4xIDBjNi44LTcuMyAxMC41LTE2LjcgMTAuNS0yNi45VjIyLjdjMC00LjcgMS43LTkuMiA0LjgtMTIuN2MzLjEtMy41IDcuNC01LjggMTIuMS02LjdjMy42LS43IDcuMy0uOSAxMC45LS45czcuMy4yIDEwLjkuOWMyLjIuNSA0LjMgMS4zIDYuMiAyLjNjLTIuMi0uMy00LjUtLjUtNi44LS41SDM0NS4zem0tMjQuNyA0MDQuNGMtMzkuNyAyLjEtODEuNy0xMC41LTExNC0zNC40Yy0xLjctLjctMy41LTEuNC01LjItMi4yYy0xOS4zIDguNS0zOS45IDEzLjEtNjAuOCAxMy4xcy00MS41LTQuNi02MC44LTEzLjFjLTEuNy44LTMuNSAxLjUtNS4yIDIuMmMtMzIuMyAyMy45LTc0LjMgMzYuNS0xMTQtMzQuNGM0LjUgMS4yIDguOSAxLjkgMTMuMyAyLjJjMzUuNSAxLjkgNzEuOS0yLjcgMTA0LjYtMTIuOGMxLjcuMyAzLjQuNyA1IDEuMWMyMC41IDQuOSA0MS44IDcuNCA2My4xIDcuNHM0Mi42LTIuNSA2My4xLTcuNGMxLjctLjQgMy40LS44IDUuMS0xLjFjMzIuNyAxMC4xIDY5LjEgMTQuNyAxMDQuNiAxMi44YzQuNC0uMyA4LjgtMSAxMy4zLTIuMnoiLz48L3N2Zz4=" alt="Google" />
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0ODAgNTEyIj48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMzQ1LjMgMi44QzM3OS45LTEuMSA0MTYuNS0uOSA0NDcuNyA0LjRjLTQuOS0yLjktMTEuNi00LjctMTguNC00LjctMzMuOCAwLTY1LjUgMTkuNS04NC4yIDQ5LjRjLTcuNC0xLjQtMTQuOS0yLjEtMjIuNS0yLjEtMzAuOSAwLTU3LjkgMTIuNS03Ny4xIDMxLjdjLTE5LjItMTkuMi00Ni4yLTMxLjctNzcuMS0zMS43Yy0xOC4zIDAtMzUuNyAzLjUtNTEuOSA5LjZjLTE3LjYtNi4xLTM3LjMtOS42LTU3LjktOS42QzEwLjMgMCAwIDEwLjMgMCAyMi43VjI4OWMwIDIwLjEgMTIuNiAzNy45IDMwLjUgNDYuNmMxLjgtLjQgMy42LS43IDUuNC0xLjFjMjMuMi01LjcgNDguNC04LjggNzQuMy04LjhjMjUuOSAwIDUxLjEgMy4xIDc0LjMgOC44YzEuOCAuNCAzLjYuNyA1LjQgMS4xYzE3LjktOC43IDMwLjUtMjYuNSAzMC41LTQ2LjZWMjIuN2MwLTQuNyAxLjctOS4yIDQuOC0xMi43YzMuMS0zLjUgNy40LTUuOCAxMi4xLTYuN2MzLjYtLjcgNy4zLS45IDEwLjktLjlzNy4zLjIgMTAuOS45YzQuNS45IDguOCAzLjIgMTIuMSA2LjdjMy4xIDMuNSA0LjggOC4xIDQuOCAxMi43VjI4OWMwIDEwLjIgMy43IDE5LjYgMTAuNSAyNi45YzM2LjUtMy45IDcyLjYtMy45IDEwOS4xIDBjNi44LTcuMyAxMC41LTE2LjcgMTAuNS0yNi45VjIyLjdjMC00LjcgMS43LTkuMiA0LjgtMTIuN2MzLjEtMy41IDcuNC01LjggMTIuMS02LjdjMy42LS43IDcuMy0uOSAxMC45LS45czcuMy4yIDEwLjkuOWMyLjIuNSA0LjMgMS4zIDYuMiAyLjNjLTIuMi0uMy00LjUtLjUtNi44LS41SDM0NS5zem0tMjQuNyA0MDQuNGMtMzkuNyAyLjEtODEuNy0xMC41LTExNC0zNC40Yy0xLjctLjctMy41LTEuNC01LjItMi4yYy0xOS4zIDguNS0zOS45IDEzLjEtNjAuOCAxMy4xcy00MS41LTQuNi02MC44LTEzLjFjLTEuNy44LTMuNSAxLjUtNS4yIDIuMmMtMzIuMyAyMy45LTc0LjMgMzYuNS0xMTQtMzQuNGM0LjUgMS4yIDguOSAxLjkgMTMuMyAyLjJjMzUuNSAxLjkgNzEuOS0yLjcgMTA0LjYtMTIuOGMxLjcuMyAzLjQuNyA1IDEuMWMyMC41IDQuOSA0MS44IDcuNCA2My4xIDcuNHM0Mi42LTIuNSA2My4xLTcuNGMxLjctLjQgMy40LS44IDUuMS0xLjFjMzIuNyAxMC4xIDY5LjEgMTQuNyAxMDQuNiAxMi44YzQuNC0uMyA4LjgtMSAxMy4zLTIuMnoiLz48L3N2Zz4=" alt="Google" />
               Sign up with Google
             </button>
             <button type="button" className={styles.socialButton}>
@@ -225,6 +235,14 @@ const Signup = () => {
         </form>
       </div>
     </div>
+  );
+};
+
+const Signup = () => {
+  return (
+    <BrowserOnly>
+      {() => <SignupContent />}
+    </BrowserOnly>
   );
 };
 

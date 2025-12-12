@@ -1,8 +1,9 @@
-
 import React, { useState } from 'react';
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import styles from './auth-styles.module.css';
 
-const PasswordReset = () => {
+const PasswordResetContent = () => {
   const [email, setEmail] = useState('');
   const [step, setStep] = useState('request'); // 'request', 'verify', 'reset'
   const [verificationCode, setVerificationCode] = useState('');
@@ -13,7 +14,9 @@ const PasswordReset = () => {
   const [successMessage, setSuccessMessage] = useState(null);
 
   // Use environment variable or fallback to localhost
-  const backendUrl = (window as any).env?.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+  const backendUrl = ExecutionEnvironment.canUseDOM
+    ? (window as any).env?.REACT_APP_BACKEND_URL || 'http://localhost:8000'
+    : 'http://localhost:8000';
 
   const handleRequestReset = async (e) => {
     e.preventDefault();
@@ -76,9 +79,9 @@ const PasswordReset = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           email: email,
-          code: verificationCode 
+          code: verificationCode
         }),
       });
 
@@ -110,7 +113,7 @@ const PasswordReset = () => {
       setError("New passwords do not match.");
       return;
     }
-    
+
     if (newPassword.length < 8) {
       setError("Password must be at least 8 characters long.");
       return;
@@ -127,10 +130,10 @@ const PasswordReset = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           email: email,
           code: verificationCode,
-          new_password: newPassword 
+          new_password: newPassword
         }),
       });
 
@@ -146,11 +149,13 @@ const PasswordReset = () => {
       console.log('Password reset response data:', data);
 
       setSuccessMessage("Password has been reset successfully. Redirecting to login...");
-      
+
       // Redirect to login after a short delay
-      setTimeout(() => {
-        window.location.href = '/login';
-      }, 2000);
+      if (typeof window !== 'undefined') {
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 2000);
+      }
 
     } catch (err) {
       console.error('Password reset error:', err);
@@ -291,6 +296,14 @@ const PasswordReset = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const PasswordReset = () => {
+  return (
+    <BrowserOnly>
+      {() => <PasswordResetContent />}
+    </BrowserOnly>
   );
 };
 

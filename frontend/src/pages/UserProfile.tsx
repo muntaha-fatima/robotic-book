@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
 import styles from './styles.module.css';
 
-const UserProfile = () => {
+const UserProfileContent = () => {
   const [username, setUsername] = useState('');
   const [profile, setProfile] = useState({});
   const [editingProfile, setEditingProfile] = useState({});
@@ -9,12 +11,16 @@ const UserProfile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
 
-  const backendUrl = (window as any).env?.REACT_APP_BACKEND_URL ||
-    'http://localhost:8000';
+  const backendUrl = ExecutionEnvironment.canUseDOM
+    ? (window as any).env?.REACT_APP_BACKEND_URL || 'http://localhost:8000'
+    : 'http://localhost:8000';
 
   // Helper to get auth token
   const getAuthToken = () => {
-    return localStorage.getItem('authToken') || '';
+    if (typeof localStorage !== 'undefined') {
+      return localStorage.getItem('authToken') || '';
+    }
+    return '';
   };
 
   // Function to verify if the token is still valid
@@ -44,14 +50,20 @@ const UserProfile = () => {
       // Verify the token before making the request
       const isValid = await verifyToken();
       if (!isValid) {
-        localStorage.removeItem('authToken');
-        window.location.href = '/login';
+        if (typeof localStorage !== 'undefined') {
+          localStorage.removeItem('authToken');
+        }
+        if (typeof window !== 'undefined') {
+          window.location.href = '/login';
+        }
         return;
       }
 
       const token = getAuthToken();
       if (!token) {
-        window.location.href = '/login'; // Redirect to login if not authenticated
+        if (typeof window !== 'undefined') {
+          window.location.href = '/login'; // Redirect to login if not authenticated
+        }
         return;
       }
 
@@ -74,8 +86,12 @@ const UserProfile = () => {
 
         if (!userResponse.ok) {
           if (userResponse.status === 401 || userResponse.status === 403) {
-            localStorage.removeItem('authToken');
-            window.location.href = '/login';
+            if (typeof localStorage !== 'undefined') {
+              localStorage.removeItem('authToken');
+            }
+            if (typeof window !== 'undefined') {
+              window.location.href = '/login';
+            }
             return;
           }
           throw new Error(`Failed to fetch user data: ${userResponse.statusText}`);
@@ -124,8 +140,12 @@ const UserProfile = () => {
       // Verify the token before making the request
       const isValid = await verifyToken();
       if (!isValid) {
-        localStorage.removeItem('authToken');
-        window.location.href = '/login';
+        if (typeof localStorage !== 'undefined') {
+          localStorage.removeItem('authToken');
+        }
+        if (typeof window !== 'undefined') {
+          window.location.href = '/login';
+        }
         return;
       }
 
@@ -212,6 +232,14 @@ const UserProfile = () => {
       )}
       {error && <div style={{ color: 'red', marginTop: '15px' }}>Error: {error}</div>}
     </div>
+  );
+};
+
+const UserProfile = () => {
+  return (
+    <BrowserOnly>
+      {() => <UserProfileContent />}
+    </BrowserOnly>
   );
 };
 
