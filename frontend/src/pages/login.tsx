@@ -11,8 +11,8 @@ const LoginPageContent = () => {
 
   // Use environment variable or fallback to localhost
   const backendUrl = ExecutionEnvironment.canUseDOM
-    ? (window as any).env?.REACT_APP_BACKEND_URL || 'http://localhost:8000'
-    : 'http://localhost:8000';
+    ? (window as any).env?.REACT_APP_BACKEND_URL || 'http://localhost:8001'
+    : 'http://localhost:8001';
 
   // Redirect if already logged in
   useEffect(() => {

@@ -6,32 +6,34 @@
 
 /* Enhanced color palette for Physical AI Humanoid Robotics */
 :root {
-  /* Primary colors inspired by robotics and tech */
-  --ifm-color-primary: #1a73e8; /* Google-inspired blue for tech feel */
-  --ifm-color-primary-dark: #1666cc;
-  --ifm-color-primary-darker: #145cb9;
-  --ifm-color-primary-darkest: #104aa6;
-  --ifm-color-primary-light: #3d8afe;
-  --ifm-color-primary-lighter: #5a9bff;
-  --ifm-color-primary-lightest: #82b3ff;
+  /* Primary colors inspired by robotics and tech - switched to neutral tones */
+  --ifm-color-primary: #5865f2; /* Changed to a more neutral indigo-blue */
+  --ifm-color-primary-dark: #404db0;
+  --ifm-color-primary-darker: #36418c;
+  --ifm-color-primary-darkest: #283066;
+  --ifm-color-primary-light: #6c78f5;
+  --ifm-color-primary-lighter: #8a96f7;
+  --ifm-color-primary-lightest: #b8c0fa;
 
-  /* Accent colors */
-  --robotic-accent-1: #00bfa5; /* Teal for secondary actions */
-  --robotic-accent-2: #ff6d00; /* Orange for highlights */
-  --robotic-accent-3: #6200ea; /* Purple for special features */
+  /* Accent colors - changed to softer tones */
+  --robotic-accent-1: #5d9e8e; /* Changed to softer teal */
+  --robotic-accent-2: #e6b450; /* Changed to softer amber */
+  --robotic-accent-3: #9c86c4; /* Changed to softer purple */
 
-  /* Neutral colors */
-  --robotic-gray-100: #f8f9fa;
-  --robotic-gray-200: #e9ecef;
-  --robotic-gray-300: #dee2e6;
-  --robotic-gray-500: #adb5bd;
-  --robotic-gray-700: #495057;
-  --robotic-gray-800: #343a40;
-  --robotic-gray-900: #212529;
+  /* Neutral colors - refined for elegance */
+  --robotic-gray-100: #f9fafb; /* Off-white */
+  --robotic-gray-200: #f3f4f6; /* Light gray */
+  --robotic-gray-300: #e5e7eb; /* Soft gray */
+  --robotic-gray-400: #d1d5db; /* Medium gray */
+  --robotic-gray-500: #9ca3af; /* Medium gray */
+  --robotic-gray-600: #6b7280; /* Gray */
+  --robotic-gray-700: #4b5563; /* Grayish */
+  --robotic-gray-800: #374151; /* Darker gray */
+  --robotic-gray-900: #1f2937; /* Charcoal */
 
   /* Typography */
-  --ifm-font-family-base: 'Inter', 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  --ifm-heading-font-weight: 600;
+  --ifm-font-family-base: 'Inter', 'Roboto', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --ifm-heading-font-weight: 700;
   --ifm-h1-font-size: 3rem;
   --ifm-h2-font-size: 2.25rem;
   --ifm-h3-font-size: 1.75rem;
@@ -46,39 +48,70 @@
   --ifm-button-border-radius: 8px;
 
   /* Shadows */
-  --ifm-global-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
-  --ifm-card-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  --ifm-global-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --ifm-card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+  --ifm-button-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --ifm-button-shadow-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.12), 0 10px 10px -5px rgba(0, 0, 0, 0.06);
 
   /* Code */
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 
   /* Custom robotic theme additions */
-  --robotic-gradient-primary: linear-gradient(135deg, var(--ifm-color-primary), var(--robotic-accent-3));
-  --robotic-gradient-secondary: linear-gradient(135deg, var(--robotic-accent-1), var(--robotic-accent-2));
-  --robotic-transition: all 0.3s ease;
+  --robotic-gradient-primary: linear-gradient(135deg, #78797c, #a8a9ad);
+  --robotic-gradient-secondary: linear-gradient(135deg, #5d9e8e, #e6b450);
+  --robotic-gradient-tertiary: linear-gradient(135deg, #78797c, #a8a9ad);
+  --robotic-gradient-card: linear-gradient(145deg, #f9fafb, #f3f4f6);
+  --robotic-gradient-text: linear-gradient(135deg, #78797c, #a8a9ad);
+  --robotic-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --robotic-transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Dark mode enhancements */
 [data-theme='dark'] {
-  --ifm-color-primary: #4285f4;
-  --ifm-color-primary-dark: #3367d6;
-  --ifm-color-primary-darker: #2d57c3;
-  --ifm-color-primary-darkest: #2446a2;
-  --ifm-color-primary-light: #5a95f5;
-  --ifm-color-primary-lighter: #73a6f7;
-  --ifm-color-primary-lightest: #8cbcfc;
+  --ifm-color-primary: #6d7efc;
+  --ifm-color-primary-dark: #4d5df0;
+  --ifm-color-primary-darker: #3947d0;
+  --ifm-color-primary-darkest: #2a36a1;
+  --ifm-color-primary-light: #8c9dff;
+  --ifm-color-primary-lighter: #adb9ff;
+  --ifm-color-primary-lightest: #d0d5ff;
 
   /* Dark mode specific colors */
-  --robotic-gray-100: #121212;
-  --robotic-gray-200: #1e1e1e;
-  --robotic-gray-300: #2a2a2a;
-  --robotic-gray-500: #4a4a4a;
-  --robotic-gray-700: #a0a0a0;
-  --robotic-gray-800: #c0c0c0;
-  --robotic-gray-900: #e0e0e0;
+  --robotic-gray-100: #111827;
+  --robotic-gray-200: #1f2937;
+  --robotic-gray-300: #374151;
+  --robotic-gray-400: #4b5563;
+  --robotic-gray-500: #6b7280;
+  --robotic-gray-600: #9ca3af;
+  --robotic-gray-700: #d1d5db;
+  --robotic-gray-800: #e5e7eb;
+  --robotic-gray-900: #f9fafb;
 
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Set elegant, full-screen gradient background */
+html,
+body {
+  background: linear-gradient(160deg, #aeacec 0%, #436b88 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* For better gradient coverage */
+body {
+  background: linear-gradient(160deg, #6d36948a 0%, #9f529a 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Ensure main content area also has the gradient if needed */
+.main-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #f7f8f7 0%, #e8e9e8 100%);
 }
 
 /* Custom typography enhancements */
@@ -278,15 +311,45 @@
   }
 
   .robotic-card {
-    margin-bottom: 15px;
+    margin-bottom: 1.5rem;
   }
 
   .card {
-    margin-bottom: 15px;
+    margin-bottom: 1.5rem;
   }
 
   .button {
-    margin: 5px 0;
+    margin: 0.3125rem 0;
+  }
+
+  .features-section {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Better mobile spacing */
+  .authForm {
+    padding: 1.5rem !important;
+  }
+
+  .authHeader {
+    padding: 2rem 1.25rem !important;
+  }
+
+  /* Mobile header styles */
+  .header-nav {
+    padding: 1rem 1rem !important;
+  }
+
+  .header-nav .nav-links {
+    display: none;
+  }
+
+  .header-nav .mobile-menu-btn {
+    display: block !important;
+  }
+
+  .mobile-menu {
+    display: flex !important;
   }
 }
 
@@ -300,14 +363,56 @@
   }
 
   .container {
-    padding: 0 15px;
+    padding: 0 0.9375rem;
   }
 
   .robotic-card {
-    padding: 20px 15px;
+    padding: 1.25rem 0.9375rem;
   }
 
   .features {
     padding: 1rem 0;
+  }
+
+  /* Better mobile spacing for buttons */
+  .authButton {
+    padding: 1rem !important;
+  }
+
+  /* More consistent spacing */
+  .authLinks {
+    margin-top: 1.5rem;
+  }
+
+  .divider {
+    margin: 2rem 0;
+  }
+
+  .socialLogin {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .socialButton {
+    justify-content: center;
+  }
+
+  .header-nav {
+    padding: 1rem 0.75rem !important;
+  }
+}
+
+/* Tablet improvements */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .features-section {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* Large screen improvements */
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
   }
 }

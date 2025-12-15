@@ -27,7 +27,19 @@ const verifyToken = async (backendUrl: string) => {
   }
 };
 
-const RAGChatbot = () => {
+interface RAGChatbotProps {
+  onNavigateToLogin?: () => void;
+  onNavigateToSignup?: () => void;
+  onNavigateToLogout?: () => void;
+  isModal?: boolean; // New prop to indicate if the chatbot is in a modal
+}
+
+const RAGChatbot: React.FC<RAGChatbotProps> = ({
+  onNavigateToLogin,
+  onNavigateToSignup,
+  onNavigateToLogout,
+  isModal = false
+}) => {
   const [messages, setMessages] = useState<{ text: string; sender: string }[]>([
     { text: "Hello! I'm your RAG Chatbot for robotics. You can ask me questions about robotics, AI, and related topics. Sign up and log in to get full access to the chatbot!", sender: 'bot' }
   ]);
@@ -87,9 +99,15 @@ const RAGChatbot = () => {
         }]);
       }, 500); // Delay to show the user message first
       // Optionally redirect to signup instead of just showing the message
-      setTimeout(() => {
-        window.location.href = '/signup';
-      }, 3000); // Redirect after 3 seconds
+      if (isModal && onNavigateToSignup) {
+        setTimeout(() => {
+          onNavigateToSignup();
+        }, 3000); // Redirect after 3 seconds
+      } else {
+        setTimeout(() => {
+          window.location.href = '/signup';
+        }, 3000); // Redirect after 3 seconds
+      }
       return;
     }
 
@@ -99,7 +117,11 @@ const RAGChatbot = () => {
       if (!isValid) {
         localStorage.removeItem('authToken');
         setIsAuthenticated(false);
-        window.location.href = '/login';
+        if (isModal && onNavigateToLogin) {
+          onNavigateToLogin();
+        } else {
+          window.location.href = '/login';
+        }
         return;
       }
 
@@ -125,7 +147,11 @@ const RAGChatbot = () => {
           // Token might be expired or invalid
           localStorage.removeItem('authToken');
           setIsAuthenticated(false);
-          window.location.href = '/login';
+          if (isModal && onNavigateToLogin) {
+            onNavigateToLogin();
+          } else {
+            window.location.href = '/login';
+          }
           return;
         }
         throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
@@ -166,7 +192,11 @@ const RAGChatbot = () => {
   const handleLogout = () => {
     localStorage.removeItem('authToken');
     setIsAuthenticated(false);
-    window.location.href = '/login';
+    if (isModal && onNavigateToLogout) {
+      onNavigateToLogout();
+    } else {
+      window.location.href = '/login';
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -185,8 +215,30 @@ const RAGChatbot = () => {
             <button onClick={handleLogout} className={styles.logoutButton}>Logout</button>
           ) : (
             <>
-              <button onClick={() => window.location.href = '/signup'} className={styles.signupButton}>Sign Up</button>
-              <button onClick={() => window.location.href = '/login'} className={styles.loginButton}>Login</button>
+              <button
+                onClick={() => {
+                  if (isModal && onNavigateToSignup) {
+                    onNavigateToSignup();
+                  } else {
+                    window.location.href = '/signup';
+                  }
+                }}
+                className={styles.signupButton}
+              >
+                Sign Up
+              </button>
+              <button
+                onClick={() => {
+                  if (isModal && onNavigateToLogin) {
+                    onNavigateToLogin();
+                  } else {
+                    window.location.href = '/login';
+                  }
+                }}
+                className={styles.loginButton}
+              >
+                Login
+              </button>
             </>
           )}
         </div>

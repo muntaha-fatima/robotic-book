@@ -1,34 +1,154 @@
 ---
 id: nodes-topics-services
-title: ROS 2 Nodes, Topics, and Services
+title: Nodes, Topics & Services
 slug: /modules/ros2/nodes-topics-services
 ---
 
-## Overview
+# 🔄 Nodes, Topics & Services: ROS 2 Communication Patterns
 
-This section focuses on the fundamental communication primitives in **ROS 2 (Robot Operating System 2)**: Nodes, Topics, and Services. These concepts form the backbone of how different components of a robotic system interact.
+<div style={{
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '0.5rem',
+  padding: '0.75rem',
+  margin: '1.5rem 0',
+  backgroundColor: 'rgba(56, 189, 248, 0.15)',
+  borderRadius: '8px',
+  border: '1px solid rgba(56, 189, 248, 0.3)'
+}}>
+  <span style={{fontSize: '1.2rem'}}>🔧</span>
+  <strong>Module 1 - ROS 2 Ecosystem</strong>
+  <span style={{fontSize: '1.2rem'}}>🔧</span>
+</div>
 
-## Key Concepts
+## 🎯 Understanding ROS 2 Communication Architecture
 
-### ROS 2 Nodes
+This section delves into the three fundamental communication patterns that form the backbone of ROS 2 systems. Understanding these concepts is crucial for developing distributed robotic applications that can efficiently coordinate between multiple software components.
 
--   **Nodes**: Executable processes that perform computation. In a ROS 2 system, each node is responsible for a specific task (e.g., a camera driver node, a navigation node, a motor control node). This modularity allows for robust and distributed development.
+## 🧱 Core Communication Concepts
 
-### ROS 2 Topics
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+  gap: '1.5rem',
+  margin: '1.5rem 0'
+}}>
 
--   **Topics**: A publish/subscribe mechanism for asynchronous, many-to-many communication between nodes.
-    -   **Publishers**: Nodes that send messages to a specific topic.
-    -   **Subscribers**: Nodes that receive messages from a specific topic.
-    -   Messages are typed, ensuring data consistency.
+<div style={{
+  padding: '1.25rem',
+  backgroundColor: 'rgba(30, 41, 59, 0.3)',
+  borderRadius: '12px',
+  border: '1px solid rgba(148, 163, 184, 0.3)'
+}}>
 
-### ROS 2 Services
+### 🖥️ **Nodes**
+In ROS 2, a **node** is an executable that uses ROS client libraries to communicate with other nodes. Nodes are the fundamental building blocks of a ROS 2 system, representing individual processes that perform specific functions such as sensor processing, control algorithms, or user interfaces.
 
--   **Services**: A request/reply mechanism for synchronous, one-to-one communication between nodes.
-    -   **Clients**: Nodes that send a request to a service.
-    -   **Servers**: Nodes that provide a service and send a response.
-    -   Useful for operations that require a direct response, like triggering an action or querying data.
+</div>
 
-## Example
+<div style={{
+  padding: '1.25rem',
+  backgroundColor: 'rgba(30, 41, 59, 0.3)',
+  borderRadius: '12px',
+  border: '1px solid rgba(148, 163, 184, 0.3)'
+}}>
+
+### 📡 **Topics**
+A **topic** is a named bus over which nodes exchange messages. Topics support asynchronous many-to-many communication via a publish/subscribe pattern, enabling loose coupling between publishers and subscribers.
+
+</div>
+
+<div style={{
+  padding: '1.25rem',
+  backgroundColor: 'rgba(30, 41, 59, 0.3)',
+  borderRadius: '12px',
+  border: '1px solid rgba(148, 163, 184, 0.3)'
+}}>
+
+### 🔄 **Services**
+A **service** is a synchronous request/reply communication pattern between two nodes. Services are useful for remote procedure calls where immediate feedback is required, such as configuration requests or computational tasks.
+
+</div>
+
+</div>
+
+## 🏗️ Detailed Component Analysis
+
+### 🖥️ **Nodes: The Building Blocks**
+
+Nodes are organized into a graph structure where they communicate via topics, services, or actions. Each node:
+
+- **Encapsulates functionality**: A single node typically performs a specific task
+- **Manages resources**: Handles its own threads, memory, and processing requirements
+- **Communicates through standard interfaces**: Uses defined message types for inter-node communication
+- **Supports lifecycle management**: Can be started, stopped, configured, and monitored
+
+```
+┌─────────────────┐    Publish    ┌─────────────────┐
+│   Sensor Node   │ ────────────► │   Processing    │
+│                 │               │     Node        │
+└─────────────────┘               └─────────────────┘
+         ▲                                │
+         │        Subscribe               │
+         └────────────────────────────────┘
+```
+
+### 📡 **Topics: Asynchronous Communication**
+
+Topics enable a publish-subscribe communication pattern where:
+
+- **Publishers** send messages to a named topic
+- **Subscribers** receive messages from a named topic
+- **No direct connection** exists between publishers and subscribers
+- **Multiple publishers/subscribers** can exist for the same topic
+- **Data flow** is unidirectional from publisher to subscriber
+
+#### Example Use Cases:
+- Sensor data streams (camera images, LIDAR scans)
+- Robot state broadcasts (joint positions, odometry)
+- Control command streams (velocity commands, motor positions)
+
+### 🔄 **Services: Synchronous Request/Response**
+
+Services provide direct request-response communication where:
+
+- **Client** sends a request and waits for a response
+- **Server** processes the request and sends back a response
+- **Tight coupling** exists during the service call
+- **Request-response** pattern ensures completion before proceeding
+
+#### Example Use Cases:
+- Robot configuration changes
+- Computational requests (path planning, object recognition)
+- System status inquiries
+- Calibration procedures
+
+## 🔧 Practical Implementation Patterns
+
+<div style={{
+  display: 'flex',
+  gap: '1rem',
+  padding: '1.25rem',
+  margin: '1.5rem 0',
+  backgroundColor: 'rgba(16, 185, 129, 0.1)',
+  borderRadius: '12px',
+  border: '1px solid rgba(16, 185, 129, 0.3)'
+}}>
+
+### 📋 **Best Practices for Communication Design**
+
+1. **Use topics** for continuous data streams and asynchronous communication
+2. **Use services** for request-response interactions that require immediate results
+3. **Consider bandwidth** when designing message types and communication frequency
+4. **Implement robust error handling** for communication failures
+5. **Design message types** for efficiency and clarity
+
+</div>
+
+## 💻 Code Example: Implementing Communication Patterns
+
+Here's how to implement the basic communication patterns in Python using ROS 2:
 
 ```python
 # Example: ROS 2 Publisher Node (Python)
@@ -62,3 +182,54 @@ def main(args=None):
 if __name__ == '__main__':
     main()
 ```
+
+This example demonstrates:
+- Creating a ROS 2 node using the `Node` class
+- Setting up a publisher with `create_publisher`
+- Using a timer to periodically publish messages
+- Logging information using the node's logger
+
+## 📖 Module Navigation
+
+This module is structured to build your understanding progressively:
+
+1. **[Introduction](./introduction.mdx)** ← Previous
+2. **[Nodes, Topics & Services](./nodes-topics-services.mdx)** - Current
+3. **[Python Agents with rclpy](./python-agents-rclpy.mdx)** - Next
+4. **[URDF for Humanoids](./urdf-humanoids.mdx)**
+
+---
+
+<div style={{
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '1.5rem',
+  margin: '1.5rem 0',
+  backgroundColor: 'rgba(56, 189, 248, 0.1)',
+  borderRadius: '12px',
+  border: '1px solid rgba(56, 189, 248, 0.3)',
+  backdropFilter: 'blur(10px)'
+}}>
+
+  <div style={{flex: 1}}>
+    <strong>← Previous</strong>
+    <br />
+    <a href="./introduction.mdx">Introduction to ROS 2</a>
+  </div>
+
+  <div style={{textAlign: 'center', flex: 1}}>
+    <strong>Module Index</strong>
+    <br />
+    <a href="../">Module 1 Overview</a>
+  </div>
+
+  <div style={{textAlign: 'right', flex: 1}}>
+    <strong>Continue →</strong>
+    <br />
+    <a href="./python-agents-rclpy.mdx">Python Agents with rclpy</a>
+  </div>
+
+</div>
+
+> 💡 **Insight**: The publish-subscribe model of topics allows for loose coupling between nodes, which promotes modularity and makes systems more maintainable and testable.

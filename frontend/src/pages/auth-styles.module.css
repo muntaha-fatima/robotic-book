@@ -6,103 +6,127 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, var(--robotic-gray-100) 0%, var(--robotic-gray-300) 100%);
   padding: 20px;
 }
 
 .authCard {
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  box-shadow: var(--ifm-card-shadow);
   overflow: hidden;
   width: 100%;
-  max-width: 450px;
-  animation: fadeIn 0.3s ease-out;
+  max-width: 460px;
+  animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--robotic-gray-300);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* Header Styles */
 .authHeader {
-  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-  padding: 30px;
+  background: var(--robotic-gradient-primary);
+  padding: 42px 30px 36px;
   text-align: center;
   color: white;
+  position: relative;
+}
+
+.authHeader::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at top right, rgba(255,255,255,0.15) 0%, transparent 40%);
+  pointer-events: none;
 }
 
 .authHeader h2 {
-  font-size: 28px;
-  font-weight: 600;
-  margin: 0 0 8px 0;
-  letter-spacing: -0.2px;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 10px 0;
+  letter-spacing: -0.3px;
+  position: relative;
+  z-index: 1;
 }
 
 .authHeader p {
-  font-size: 15px;
-  opacity: 0.9;
+  font-size: 16px;
+  opacity: 0.95;
   margin: 0;
-  font-weight: 300;
+  font-weight: 400;
+  position: relative;
+  z-index: 1;
 }
 
 /* Form Styles */
 .authForm {
-  padding: 30px;
+  padding: 36px 32px 40px;
 }
 
 .authForm .formGroup {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .authForm label {
   display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: #333;
-  font-size: 14px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: var(--robotic-gray-800);
+  font-size: 15px;
+  letter-spacing: -0.1px;
 }
 
 .authForm input {
   width: 100%;
-  padding: 14px;
-  border: 1px solid #e1e5eb;
-  border-radius: 8px;
+  padding: 16px;
+  border: 1px solid var(--robotic-gray-300);
+  border-radius: 12px;
   font-size: 16px;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  background-color: #fafbfc;
+  transition: var(--robotic-transition);
+  background-color: var(--robotic-gray-50);
+  font-family: var(--ifm-font-family-base);
+  letter-spacing: -0.1px;
 }
 
 .authForm input:focus {
   outline: none;
-  border-color: #2575fc;
-  box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.15);
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.15);
   background-color: white;
 }
 
 .authForm input::placeholder {
-  color: #a0aec0;
+  color: var(--robotic-gray-500);
+  opacity: 0.8;
 }
 
 /* Button Styles */
 .authButton {
   width: 100%;
-  padding: 14px;
-  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  padding: 16px;
+  background: var(--robotic-gradient-primary);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: var(--robotic-transition);
   margin-top: 10px;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: -0.1px;
 }
 
 .authButton:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(37, 117, 252, 0.3);
+  box-shadow: var(--ifm-button-shadow-hover);
 }
 
 .authButton:active:not(:disabled) {
@@ -113,46 +137,81 @@
   opacity: 0.7;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
 }
 
 /* Link Styles */
 .authLinks {
   text-align: center;
-  margin-top: 20px;
-  font-size: 14px;
+  margin-top: 24px;
+  font-size: 15px;
 }
 
 .authLinks a {
-  color: #2575fc;
+  color: var(--ifm-color-primary);
   text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s;
+  font-weight: 600;
+  transition: var(--robotic-transition);
+  position: relative;
+}
+
+.authLinks a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--ifm-color-primary);
+  transition: var(--robotic-transition);
 }
 
 .authLinks a:hover {
-  color: #1a65e0;
-  text-decoration: underline;
+  color: var(--ifm-color-primary-darker);
+  text-decoration: none;
+}
+
+.authLinks a:hover::after {
+  width: 100%;
 }
 
 /* Error and Success Message Styles */
 .errorMessage {
-  background-color: #fed7d7;
-  color: #c53030;
-  padding: 12px;
-  border-radius: 8px;
-  margin-top: 15px;
+  background-color: #fef2f2;
+  color: #dc2626;
+  padding: 16px;
+  border-radius: 12px;
+  margin-top: 20px;
   font-size: 14px;
-  border-left: 4px solid #fc8181;
+  border-left: 4px solid #fecaca;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.errorMessage::before {
+  content: '⚠';
+  font-size: 18px;
+  margin-top: -2px;
 }
 
 .successMessage {
-  background-color: #c6f6d5;
-  color: #2f855a;
-  padding: 12px;
-  border-radius: 8px;
-  margin-top: 15px;
+  background-color: #f0fdf4;
+  color: #16a34a;
+  padding: 16px;
+  border-radius: 12px;
+  margin-top: 20px;
   font-size: 14px;
-  border-left: 4px solid #68d391;
+  border-left: 4px solid #bbf7d0;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.successMessage::before {
+  content: '✓';
+  font-size: 18px;
+  margin-top: -2px;
 }
 
 /* Divider */
@@ -160,101 +219,128 @@
   display: flex;
   align-items: center;
   text-align: center;
-  margin: 25px 0;
-  color: #718096;
+  margin: 32px 0;
+  color: var(--robotic-gray-600);
   font-size: 14px;
+  font-weight: 500;
+  position: relative;
 }
 
 .divider::before,
 .divider::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid #e2e8f0;
+  border-bottom: 1px solid var(--robotic-gray-300);
 }
 
 .divider::before {
-  margin-right: 10px;
+  margin-right: 16px;
 }
 
 .divider::after {
-  margin-left: 10px;
+  margin-left: 16px;
 }
 
 /* Social Login */
 .socialLogin {
   display: flex;
-  gap: 15px;
-  margin-top: 20px;
+  gap: 16px;
+  margin-top: 28px;
 }
 
 .socialButton {
   flex: 1;
-  padding: 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
+  padding: 15px 12px;
+  border: 1px solid var(--robotic-gray-300);
+  border-radius: 12px;
   background: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: var(--robotic-transition);
+  font-weight: 600;
+  color: var(--robotic-gray-800);
+  letter-spacing: -0.1px;
 }
 
 .socialButton:hover {
-  border-color: #cbd5e0;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border-color: var(--robotic-gray-400);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
 }
 
 .socialButton img {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
 }
 
 /* Password Strength Indicator */
 .passwordStrengthContainer {
-  margin-top: 5px;
+  margin-top: 8px;
 }
 
 .passwordStrengthBar {
-  height: 4px;
-  background-color: #e2e8f0;
-  border-radius: 2px;
+  height: 6px;
+  background-color: var(--robotic-gray-200);
+  border-radius: 3px;
   overflow: hidden;
+  margin-bottom: 6px;
 }
 
 .passwordStrengthLevel {
   height: 100%;
   width: 0;
-  transition: width 0.3s, background-color 0.3s;
+  transition: var(--robotic-transition-fast);
+  border-radius: 3px;
 }
 
-.strength-weak { background-color: #e53e3e; width: 33%; }
-.strength-medium { background-color: #d69e2e; width: 66%; }
-.strength-strong { background-color: #38a169; width: 100%; }
+.strength-weak {
+  background-color: #ef4444;
+  width: 33%;
+}
+.strength-medium {
+  background-color: #f59e0b;
+  width: 66%;
+}
+.strength-strong {
+  background-color: #10b981;
+  width: 100%;
+}
 
 .passwordStrengthText {
-  font-size: 12px;
+  font-size: 13px;
   margin-top: 4px;
-  color: #718096;
+  color: var(--robotic-gray-600);
+  font-weight: 500;
 }
 
 /* Responsive Design */
 @media (max-width: 480px) {
   .authCard {
-    margin: 10px;
+    margin: 12px;
     max-width: 100%;
+    border-radius: 16px;
   }
-  
+
   .authHeader {
-    padding: 25px 20px;
+    padding: 36px 24px 32px;
   }
-  
+
   .authForm {
-    padding: 25px 20px;
+    padding: 32px 24px 36px;
   }
-  
+
   .authHeader h2 {
-    font-size: 24px;
+    font-size: 28px;
+  }
+
+  .socialLogin {
+    flex-direction: column;
+  }
+
+  .socialButton {
+    justify-content: center;
   }
 }

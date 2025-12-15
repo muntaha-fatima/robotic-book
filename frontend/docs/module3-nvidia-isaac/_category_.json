@@ -1,4 +1,10 @@
 {
-  "label": "Module 3 - NVIDIA Isaac",
-  "position": 3
+  "label": "🧠 Module 3 - NVIDIA Isaac AI",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "title": "NVIDIA Isaac AI",
+    "description": "Hardware-accelerated AI for perception, navigation, and manipulation",
+    "image": "/img/robot-icon.png"
+  }
 }

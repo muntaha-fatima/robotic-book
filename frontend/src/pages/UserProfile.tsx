@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import ExecutionEnvironment from '@docusaurus/ExecutionEnvironment';
-import styles from './styles.module.css';
 
 const UserProfileContent = () => {
   const [username, setUsername] = useState('');
@@ -184,17 +183,26 @@ const UserProfileContent = () => {
   };
 
   if (isLoading) {
-    return <div style={{ textAlign: 'center', marginTop: '50px' }}>Loading profile...</div>;
+    return <div style={{ textAlign: 'center', padding: '3rem', maxWidth: '600px', margin: '0 auto' }}>Loading profile...</div>;
   }
 
   if (error) {
-    return <div style={{ textAlign: 'center', marginTop: '50px', color: 'red' }}>
-      <p>Error: {error}</p>
-      <p style={{ fontSize: '0.85em', marginTop: '5px' }}>
-        <strong>Troubleshooting:</strong> Make sure the backend server is running on {backendUrl}.
-        If using Docker, ensure both frontend and backend services are started.
-        Check browser console for more details.
-      </p>
+    return <div style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
+      <div style={{
+        backgroundColor: '#fef2f2',
+        color: '#dc2626',
+        padding: '1.25rem',
+        borderRadius: '12px',
+        marginBottom: '1.5rem',
+        border: '1px solid #fecaca'
+      }}>
+        <p style={{ margin: '0 0 0.5rem 0', fontWeight: '600' }}>Error: {error}</p>
+        <p style={{ margin: 0, fontSize: '0.875rem' }}>
+          <strong>Troubleshooting:</strong> Make sure the backend server is running on {backendUrl}.
+          If using Docker, ensure both frontend and backend services are started.
+          Check browser console for more details.
+        </p>
+      </div>
     </div>;
   }
 
@@ -202,35 +210,170 @@ const UserProfileContent = () => {
   // You might want to adjust how profile fields are displayed/edited based on actual data structure
 
   return (
-    <div style={{ padding: '20px', maxWidth: '600px', margin: '50px auto' }}>
-      <h1>User Profile</h1>
-      <p><strong>Username:</strong> {username}</p>
+    <div style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>
+      <div style={{
+        backgroundColor: 'white',
+        borderRadius: '20px',
+        padding: '2rem',
+        boxShadow: 'var(--ifm-card-shadow)'
+      }}>
+        <h1 style={{
+          margin: '0 0 1.5rem 0',
+          color: 'var(--robotic-gray-900)',
+          fontSize: '2rem',
+          fontWeight: '700'
+        }}>User Profile</h1>
 
-      {!isEditing ? (
-        <div>
-          <h2>Profile Details</h2>
-          {Object.keys(profile).length === 0 ? (
-            <p>No profile details available yet.</p>
-          ) : (
-            Object.entries(profile).map(([key, value]) => {
-              // Don't show sensitive information like password_hash
-              if (key !== 'password_hash' && key !== 'id') {
-                return <p key={key}><strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong> {String(value)}</p>;
-              }
-              return null;
-            })
-          )}
-          <button onClick={handleEditClick} style={{ marginRight: '10px' }}>Edit Profile</button>
+        <div style={{ marginBottom: '1.5rem' }}>
+          <p style={{ margin: '0.5rem 0', fontSize: '1.1rem' }}>
+            <strong style={{ color: 'var(--robotic-gray-700)' }}>Username:</strong>
+            <span style={{
+              color: 'var(--robotic-gray-900)',
+              marginLeft: '0.5rem',
+              fontWeight: '600'
+            }}>
+              {username}
+            </span>
+          </p>
         </div>
-      ) : (
-        <div>
-          <h2>Edit Profile</h2>
-          <p>Profile editing functionality needs to be implemented in the backend.</p>
-          <button onClick={handleSaveProfile} disabled={isLoading} style={{ marginRight: '10px' }}>Save Profile</button>
-          <button onClick={handleCancelEdit} disabled={isLoading}>Cancel</button>
-        </div>
-      )}
-      {error && <div style={{ color: 'red', marginTop: '15px' }}>Error: {error}</div>}
+
+        {!isEditing ? (
+          <div>
+            <h2 style={{
+              margin: '0 0 1.5rem 0',
+              color: 'var(--robotic-gray-800)',
+              fontSize: '1.5rem',
+              fontWeight: '600'
+            }}>Profile Details</h2>
+
+            {Object.keys(profile).length === 0 ? (
+              <p style={{
+                color: 'var(--robotic-gray-600)',
+                fontStyle: 'italic',
+                marginBottom: '1.5rem'
+              }}>No profile details available yet.</p>
+            ) : (
+              <div style={{ marginBottom: '1.5rem' }}>
+                {Object.entries(profile).map(([key, value]) => {
+                  // Don't show sensitive information like password_hash
+                  if (key !== 'password_hash' && key !== 'id') {
+                    return (
+                      <p key={key} style={{ margin: '0.75rem 0' }}>
+                        <strong style={{ color: 'var(--robotic-gray-700)' }}>
+                          {key.charAt(0).toUpperCase() + key.slice(1)}:
+                        </strong>
+                        <span style={{
+                          color: 'var(--robotic-gray-900)',
+                          marginLeft: '0.5rem',
+                          fontWeight: '500'
+                        }}>
+                          {String(value)}
+                        </span>
+                      </p>
+                    );
+                  }
+                  return null;
+                })}
+              </div>
+            )}
+
+            <div style={{ marginTop: '2rem' }}>
+              <button
+                onClick={handleEditClick}
+                style={{
+                  backgroundColor: 'var(--ifm-color-primary)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '0.75rem 1.5rem',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'var(--robotic-transition)',
+                  marginRight: '0.75rem'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--ifm-color-primary-darker)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--ifm-color-primary)'}
+              >
+                Edit Profile
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <h2 style={{
+              margin: '0 0 1.5rem 0',
+              color: 'var(--robotic-gray-800)',
+              fontSize: '1.5rem',
+              fontWeight: '600'
+            }}>Edit Profile</h2>
+
+            <p style={{
+              color: 'var(--robotic-gray-600)',
+              marginBottom: '1.5rem',
+              fontStyle: 'italic'
+            }}>
+              Profile editing functionality needs to be implemented in the backend.
+            </p>
+
+            <div style={{ marginTop: '1.5rem' }}>
+              <button
+                onClick={handleSaveProfile}
+                disabled={isLoading}
+                style={{
+                  backgroundColor: 'var(--robotic-accent-1)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '0.75rem 1.5rem',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  cursor: isLoading ? 'not-allowed' : 'pointer',
+                  transition: 'var(--robotic-transition)',
+                  marginRight: '0.75rem'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--robotic-accent-1)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--robotic-accent-1)'}
+              >
+                {isLoading ? 'Saving...' : 'Save Profile'}
+              </button>
+
+              <button
+                onClick={handleCancelEdit}
+                disabled={isLoading}
+                style={{
+                  backgroundColor: 'var(--robotic-gray-600)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '0.75rem 1.5rem',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  cursor: isLoading ? 'not-allowed' : 'pointer',
+                  transition: 'var(--robotic-transition)'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--robotic-gray-700)'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--robotic-gray-600)'}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+
+        {error && (
+          <div style={{
+            backgroundColor: '#fef2f2',
+            color: '#dc2626',
+            padding: '1rem',
+            borderRadius: '8px',
+            marginTop: '1.5rem',
+            border: '1px solid #fecaca'
+          }}>
+            Error: {error}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

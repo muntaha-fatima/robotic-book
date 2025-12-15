@@ -34,7 +34,6 @@ const config: Config = {
     defaultLocale: 'en',
     locales: ['en'],
   },
-
   presets: [
     [
       'classic',
@@ -68,6 +67,7 @@ const config: Config = {
     ],
   ],
 
+
   themeConfig: {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
@@ -75,7 +75,7 @@ const config: Config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: 'Physical AI Humanoid Robotics',
+        title: '🤖 Physical AI & Humanoid Robotics',
         logo: {
           alt: 'Physical AI Humanoid Robotics Logo',
           src: 'img/logo.svg',
@@ -85,14 +85,14 @@ const config: Config = {
               type: 'docSidebar',
               sidebarId: 'tutorialSidebar',
               position: 'left',
-              label: 'Tutorial',
+              label: '📚 Textbook',
             },
-            {to: '/blog', label: 'Blog', position: 'left'},
-            {to: '/signup', label: 'Sign Up', position: 'right'},
-            {to: '/login', label: 'Login', position: 'right'},
+            {to: '/blog', label: '📰 Blog', position: 'left'},
+            {to: '/signup', label: '✅ Sign Up', position: 'right'},
+            {to: '/login', label: '🔐 Login', position: 'right'},
             {
               href: 'https://github.com/physical-ai-humanoid-robotics/physical-ai-humanoid-robotics',
-              label: 'GitHub',
+              label: '🐙 GitHub',
               position: 'right',
             },
           ],

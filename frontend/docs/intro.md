@@ -2,46 +2,57 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# 🤖 Physical AI & Humanoid Robotics Textbook
 
-Let's discover **Docusaurus in less than 5 minutes**.
+Welcome to the comprehensive textbook on **Physical AI and Humanoid Robotics**. This educational resource provides in-depth coverage of cutting-edge robotics technologies, from core middleware systems to advanced AI integration.
 
-## Getting Started
+## 🎯 What You'll Discover
 
-Get started by **creating a new site**.
+This textbook is structured as a comprehensive learning journey through the fundamental and advanced concepts of humanoid robotics:
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+- **ROS 2 Ecosystem**: Master robot middleware, nodes, topics, and services
+- **Digital Twin Simulation**: Explore physics-based simulation environments
+- **NVIDIA Isaac AI**: Understand hardware-accelerated AI for robotics
+- **Vision-Language-Action Models**: Learn about multimodal AI integration
 
-### What you'll need
+### 🛠️ Prerequisites
 
-- [Node.js](https://nodejs.org/en/download/) version 20.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+Before diving deep into the content, ensure you have:
 
-## Generate a new site
+- Familiarity with programming concepts (Python/C++)
+- Basic understanding of robotics principles
+- Access to a development environment with ROS 2 installed
+- Optional: Hardware for practical implementation
 
-Generate a new Docusaurus site using the **classic template**.
+## 📚 Learning Path
 
-The classic template will automatically be added to your project after you run the command:
+This textbook is organized in a progressive learning path:
 
-```bash
-npm init docusaurus@latest my-website classic
-```
+1. **Foundation Modules**: Core concepts and essential tools
+2. **Intermediate Concepts**: Advanced implementations and integrations
+3. **Advanced Applications**: Research-level topics and current developments
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+Each module builds upon the previous ones, creating a solid foundation for understanding humanoid robotics systems.
 
-The command also installs all necessary dependencies you need to run Docusaurus.
+## 🚀 Getting Started
 
-## Start your site
+Ready to embark on this robotic journey? Start with **Module 1** to learn about ROS 2, the essential middleware for modern robotics:
 
-Run the development server:
+<div style={{
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '1rem',
+  padding: '1.5rem',
+  margin: '1.5rem 0',
+  backgroundColor: 'rgba(56, 189, 248, 0.1)',
+  borderRadius: '12px',
+  border: '1px solid rgba(56, 189, 248, 0.3)',
+  backdropFilter: 'blur(10px)'
+}}>
 
-```bash
-cd my-website
-npm run start
-```
+  [Continue to Module 1 - ROS 2](./module1-ros2/introduction.mdx) →
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
+</div>
 
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+> 💡 **Tip**: For the best learning experience, follow the modules in sequence and practice the examples as you progress through each section.
