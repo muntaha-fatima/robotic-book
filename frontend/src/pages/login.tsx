@@ -116,6 +116,7 @@ const LoginPageContent = () => {
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter your username"
               required
+              className={styles.inputField}
             />
           </div>
 
@@ -128,11 +129,28 @@ const LoginPageContent = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               required
+              className={styles.inputField}
             />
           </div>
 
+          <div className={styles.formGroup} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <label className={styles.rememberMe}>
+              <input
+                type="checkbox"
+                style={{ marginRight: '8px' }}
+              />
+              Remember me
+            </label>
+            <a href="#" className={styles.forgotPassword}>Forgot password?</a>
+          </div>
+
           <button type="submit" disabled={isLoading} className={styles.authButton}>
-            {isLoading ? 'Signing in...' : 'Sign In'}
+            {isLoading ? (
+              <>
+                <span className={styles.spinner}></span>
+                Signing in...
+              </>
+            ) : 'Sign In'}
           </button>
 
           {error && (

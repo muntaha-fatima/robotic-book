@@ -1,4 +1,4 @@
-/* Modern Authentication UI Styles */
+/* Modern Authentication UI Styles - Updated to match site design */
 
 /* Container Styles */
 .authContainer {
@@ -6,19 +6,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--robotic-gray-100) 0%, var(--robotic-gray-300) 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 30%, #334155 70%, #475569 100%);
   padding: 20px;
 }
 
 .authCard {
-  background: white;
+  background: rgba(30, 41, 59, 0.8);
   border-radius: 20px;
-  box-shadow: var(--ifm-card-shadow);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   width: 100%;
   max-width: 460px;
   animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid var(--robotic-gray-300);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  backdrop-filter: blur(10px);
+  color: white;
 }
 
 @keyframes slideIn {
@@ -28,7 +30,7 @@
 
 /* Header Styles */
 .authHeader {
-  background: var(--robotic-gradient-primary);
+  background: linear-gradient(135deg, #60a5fa, #38bdf8, #0ea5e9);
   padding: 42px 30px 36px;
   text-align: center;
   color: white;
@@ -53,6 +55,10 @@
   letter-spacing: -0.3px;
   position: relative;
   z-index: 1;
+  background: linear-gradient(to right, #f0f9ff, #e0f2fe, #bae6fd);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .authHeader p {
@@ -62,6 +68,7 @@
   font-weight: 400;
   position: relative;
   z-index: 1;
+  color: #e2e8f0;
 }
 
 /* Form Styles */
@@ -77,7 +84,7 @@
   display: block;
   margin-bottom: 10px;
   font-weight: 600;
-  color: var(--robotic-gray-800);
+  color: #e2e8f0;
   font-size: 15px;
   letter-spacing: -0.1px;
 }
@@ -85,34 +92,124 @@
 .authForm input {
   width: 100%;
   padding: 16px;
-  border: 1px solid var(--robotic-gray-300);
+  border: 1px solid rgba(148, 163, 184, 0.3);
   border-radius: 12px;
   font-size: 16px;
   transition: var(--robotic-transition);
-  background-color: var(--robotic-gray-50);
+  background-color: rgba(30, 41, 59, 0.6);
   font-family: var(--ifm-font-family-base);
   letter-spacing: -0.1px;
+  color: white;
+  backdrop-filter: blur(10px);
 }
 
 .authForm input:focus {
   outline: none;
-  border-color: var(--ifm-color-primary);
-  box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.15);
-  background-color: white;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2);
+  background-color: rgba(15, 23, 42, 0.8);
 }
 
 .authForm input::placeholder {
-  color: var(--robotic-gray-500);
+  color: #94a3b8;
   opacity: 0.8;
+}
+
+/* Input field focus and hover styles */
+.inputField {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 12px;
+  font-size: 16px;
+  transition: var(--robotic-transition);
+  background-color: rgba(30, 41, 59, 0.6);
+  font-family: var(--ifm-font-family-base);
+  letter-spacing: -0.1px;
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+.inputField:focus {
+  outline: none;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2);
+  background-color: rgba(15, 23, 42, 0.8);
+}
+
+/* Remember me and forgot password styles */
+.rememberMe {
+  display: flex;
+  align-items: center;
+  color: #cbd5e1;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.rememberMe input {
+  margin-right: 8px;
+}
+
+.forgotPassword {
+  color: #38bdf8;
+  text-decoration: none;
+  font-size: 14px;
+  transition: var(--robotic-transition);
+}
+
+.forgotPassword:hover {
+  color: #7dd3fc;
+  text-decoration: underline;
+}
+
+/* Spinner for loading state */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Terms agreement styles */
+.termsAgreement {
+  display: flex;
+  align-items: flex-start;
+  color: #cbd5e1;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.termsAgreement input {
+  margin-right: 8px;
+  margin-top: 2px;
+}
+
+.termsLink {
+  color: #38bdf8;
+  text-decoration: none;
+  transition: var(--robotic-transition);
+}
+
+.termsLink:hover {
+  color: #7dd3fc;
+  text-decoration: underline;
 }
 
 /* Button Styles */
 .authButton {
   width: 100%;
   padding: 16px;
-  background: var(--robotic-gradient-primary);
-  color: white;
-  border: none;
+  background: rgba(56, 189, 248, 0.2);
+  color: #e0f2fe;
+  border: 1px solid rgba(56, 189, 248, 0.4);
   border-radius: 12px;
   font-size: 16px;
   font-weight: 600;
@@ -122,11 +219,13 @@
   position: relative;
   overflow: hidden;
   letter-spacing: -0.1px;
+  backdrop-filter: blur(10px);
 }
 
 .authButton:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: var(--ifm-button-shadow-hover);
+  background: rgba(56, 189, 248, 0.3);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(56, 189, 248, 0.3);
 }
 
 .authButton:active:not(:disabled) {
@@ -145,10 +244,11 @@
   text-align: center;
   margin-top: 24px;
   font-size: 15px;
+  color: #cbd5e1;
 }
 
 .authLinks a {
-  color: var(--ifm-color-primary);
+  color: #38bdf8;
   text-decoration: none;
   font-weight: 600;
   transition: var(--robotic-transition);
@@ -162,12 +262,12 @@
   left: 0;
   width: 0;
   height: 2px;
-  background-color: var(--ifm-color-primary);
+  background-color: #38bdf8;
   transition: var(--robotic-transition);
 }
 
 .authLinks a:hover {
-  color: var(--ifm-color-primary-darker);
+  color: #7dd3fc;
   text-decoration: none;
 }
 
@@ -177,16 +277,17 @@
 
 /* Error and Success Message Styles */
 .errorMessage {
-  background-color: #fef2f2;
-  color: #dc2626;
+  background-color: rgba(127, 29, 29, 0.3); /* red-900/30 */
+  color: #fca5a5; /* red-300 */
   padding: 16px;
   border-radius: 12px;
   margin-top: 20px;
   font-size: 14px;
-  border-left: 4px solid #fecaca;
+  border-left: 4px solid #f87171; /* red-400 */
   display: flex;
   align-items: flex-start;
   gap: 10px;
+  border: 1px solid rgba(239, 68, 68, 0.3); /* red-500/30 */
 }
 
 .errorMessage::before {
@@ -196,16 +297,17 @@
 }
 
 .successMessage {
-  background-color: #f0fdf4;
-  color: #16a34a;
+  background-color: rgba(21, 128, 61, 0.3); /* green-800/30 */
+  color: #6ee7b7; /* green-300 */
   padding: 16px;
   border-radius: 12px;
   margin-top: 20px;
   font-size: 14px;
-  border-left: 4px solid #bbf7d0;
+  border-left: 4px solid #34d399; /* green-400 */
   display: flex;
   align-items: flex-start;
   gap: 10px;
+  border: 1px solid rgba(34, 197, 94, 0.3); /* green-500/30 */
 }
 
 .successMessage::before {
@@ -220,7 +322,7 @@
   align-items: center;
   text-align: center;
   margin: 32px 0;
-  color: var(--robotic-gray-600);
+  color: #94a3b8;
   font-size: 14px;
   font-weight: 500;
   position: relative;
@@ -230,7 +332,7 @@
 .divider::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid var(--robotic-gray-300);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.3);
 }
 
 .divider::before {
@@ -251,9 +353,9 @@
 .socialButton {
   flex: 1;
   padding: 15px 12px;
-  border: 1px solid var(--robotic-gray-300);
+  border: 1px solid rgba(148, 163, 184, 0.3);
   border-radius: 12px;
-  background: white;
+  background: rgba(30, 41, 59, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -261,14 +363,16 @@
   cursor: pointer;
   transition: var(--robotic-transition);
   font-weight: 600;
-  color: var(--robotic-gray-800);
+  color: #e2e8f0;
   letter-spacing: -0.1px;
+  backdrop-filter: blur(10px);
 }
 
 .socialButton:hover {
-  border-color: var(--robotic-gray-400);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: #38bdf8;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   transform: translateY(-1px);
+  background: rgba(30, 41, 59, 0.8);
 }
 
 .socialButton img {
@@ -283,7 +387,7 @@
 
 .passwordStrengthBar {
   height: 6px;
-  background-color: var(--robotic-gray-200);
+  background-color: rgba(148, 163, 184, 0.3);
   border-radius: 3px;
   overflow: hidden;
   margin-bottom: 6px;
@@ -312,7 +416,7 @@
 .passwordStrengthText {
   font-size: 13px;
   margin-top: 4px;
-  color: var(--robotic-gray-600);
+  color: #94a3b8;
   font-weight: 500;
 }
 

@@ -14,8 +14,8 @@ const SignupContent = () => {
 
   // Use environment variable or fallback to localhost
   const backendUrl = ExecutionEnvironment.canUseDOM
-    ? (window as any).env?.REACT_APP_BACKEND_URL || 'http://localhost:8000'
-    : 'http://localhost:8000';
+    ? (window as any).env?.REACT_APP_BACKEND_URL || 'http://localhost:8001'
+    : 'http://localhost:8001';
 
   // Redirect if already logged in
   useEffect(() => {
@@ -156,6 +156,7 @@ const SignupContent = () => {
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter your username"
               required
+              className={styles.inputField}
             />
           </div>
 
@@ -168,6 +169,7 @@ const SignupContent = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
               required
+              className={styles.inputField}
             />
 
             {/* Password Strength Indicator */}
@@ -197,11 +199,28 @@ const SignupContent = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="Confirm your password"
               required
+              className={styles.inputField}
             />
           </div>
 
+          <div className={styles.formGroup} style={{ display: 'flex', alignItems: 'flex-start' }}>
+            <label className={styles.termsAgreement}>
+              <input
+                type="checkbox"
+                style={{ marginRight: '8px', marginTop: '2px' }}
+                required
+              />
+              I agree to the <a href="#" className={styles.termsLink}>Terms of Service</a> and <a href="#" className={styles.termsLink}>Privacy Policy</a>
+            </label>
+          </div>
+
           <button type="submit" disabled={isLoading} className={styles.authButton}>
-            {isLoading ? 'Creating account...' : 'Sign Up'}
+            {isLoading ? (
+              <>
+                <span className={styles.spinner}></span>
+                Creating account...
+              </>
+            ) : 'Sign Up'}
           </button>
 
           {error && (
@@ -224,7 +243,7 @@ const SignupContent = () => {
 
           <div className={styles.socialLogin}>
             <button type="button" className={styles.socialButton}>
-              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0ODAgNTEyIj48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMzQ1LjMgMi44QzM3OS45LTEuMSA0MTYuNS0uOSA0NDcuNyA0LjRjLTQuOS0yLjktMTEuNi00LjctMTguNC00LjctMzMuOCAwLTY1LjUgMTkuNS04NC4yIDQ5LjRjLTcuNC0xLjQtMTQuOS0yLjEtMjIuNS0yLjEtMzAuOSAwLTU3LjkgMTIuNS03Ny4xIDMxLjdjLTE5LjItMTkuMi00Ni4yLTMxLjctNzcuMS0zMS43Yy0xOC4zIDAtMzUuNyAzLjUtNTEuOSA5LjZjLTE3LjYtNi4xLTM3LjMtOS42LTU3LjktOS42QzEwLjMgMCAwIDEwLjMgMCAyMi43VjI4OWMwIDIwLjEgMTIuNiAzNy45IDMwLjUgNDYuNmMxLjgtLjQgMy42LS43IDUuNC0xLjFjMjMuMi01LjcgNDguNC04LjggNzQuMy04LjhjMjUuOSAwIDUxLjEgMy4xIDc0LjMgOC44YzEuOCAuNCAzLjYuNyA1LjQgMS4xYzE3LjktOC43IDMwLjUtMjYuNSAzMC41LTQ2LjZWMjIuN2MwLTQuNyAxLjctOS4yIDQuOC0xMi43YzMuMS0zLjUgNy40LTUuOCAxMi4xLTYuN2MzLjYtLjcgNy4zLS45IDEwLjktLjlzNy4zLjIgMTAuOS45YzQuNS45IDguOCAzLjIgMTIuMSA2LjdjMy4xIDMuNSA0LjggOC4xIDQuOCAxMi43VjI4OWMwIDEwLjIgMy43IDE5LjYgMTAuNSAyNi45YzM2LjUtMy45IDcyLjYtMy45IDEwOS4xIDBjNi44LTcuMyAxMC41LTE2LjcgMTAuNS0yNi45VjIyLjdjMC00LjcgMS43LTkuMiA0LjgtMTIuN2MzLjEtMy41IDcuNC01LjggMTIuMS02LjdjMy42LS43IDcuMy0uOSAxMC45LS45czcuMy4yIDEwLjkuOWMyLjIuNSA0LjMgMS4zIDYuMiAyLjNjLTIuMi0uMy00LjUtLjUtNi44LS41SDM0NS5zem0tMjQuNyA0MDQuNGMtMzkuNyAyLjEtODEuNy0xMC41LTExNC0zNC40Yy0xLjctLjctMy41LTEuNC01LjItMi4yYy0xOS4zIDguNS0zOS45IDEzLjEtNjAuOCAxMy4xcy00MS41LTQuNi02MC44LTEzLjFjLTEuNy44LTMuNSAxLjUtNS4yIDIuMmMtMzIuMyAyMy45LTc0LjMgMzYuNS0xMTQtMzQuNGM0LjUgMS4yIDguOSAxLjkgMTMuMyAyLjJjMzUuNSAxLjkgNzEuOS0yLjcgMTA0LjYtMTIuOGMxLjcuMyAzLjQuNyA1IDEuMWMyMC41IDQuOSA0MS44IDcuNCA2My4xIDcuNHM0Mi42LTIuNSA2My4xLTcuNGMxLjctLjQgMy40LS44IDUuMS0xLjFjMzIuNyAxMC4xIDY5LjEgMTQuNyAxMDQuNiAxMi44YzQuNC0uMyA4LjgtMSAxMy4zLTIuMnoiLz48L3N2Zz4=" alt="Google" />
+              <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0ODAgNTEyIj48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMzQ1LjMgMi44QzM3OS45LTEuMSA0MTYuNS0uOSA0NDcuNyA0LjRjLTQuOS0yLjktMTEuNi00LjctMTguNC00LjctMzMuOCAwLTY1LjUgMTkuNS04NC4yIDQ5LjRjLTcuNC0xLjQtMTQuOS0yLjEtMjIuNS0yLjEtMzAuOSAwLTU3LjkgMTIuNS03Ny4xIDMxLjdjLTE5LjItMTkuMi00Ni4yLTMxLjctNzcuMS0zMS43Yy0xOC4zIDAtMzUuNyAzLjUtNTEuOSA5LjZjLTE3LjYtNi4xLTM3LjMtOS42LTU3LjktOS42QzEwLjMgMCAwIDEwLjMgMCAyMi43VjI4OWMwIDIwLjEgMTIuNiAzNy45IDMwLjUgNDYuNmMxLjgtLjQgMy42LS43IDUuNC0xLjFjMjMuMi01LjcgNDguNC04LjggNzQuMy04LjhjMjUuOSAwIDUxLjEgMy4xIDc0LjMgOC44YzEuOCAuNCAzLjYuNyA1LjQgMS4xYzE3LjktOC43IDMwLjUtMjYuNSAzMC41LTQ2LjZWMjIuN2MwLTQuNyAxLjctOS4yIDQuOC0xMi43YzMuMS0zLjUgNy40LTUuOCAxMi4xLTYuN2MzLjYtLjcgNy4zLS45IDEwLjktLjlzNy4zLjIgMTAuOS45YzQuNS45IDguOCAzLjIgMTIuMSA2LjdjMy4xIDMuNSA0LjggOC4xIDQuOCAxMi43VjI4OWMwIDEwLjIgMy43IDE5LjYgMTAuNSAyNi45YzM2LjUtMy45IDcyLjYtMy45IDEwOS4xIDBjNi44LTcuMyAxMC41LTE2LjcgMTAuNS0yNi45VjIyLjdjMC00LjcgMS43LTkuMiA0LjgtMTIuN2MzLjEtMy41IDcuNC01LjggMTIuMS02LjdjMy42LS4uOSAxMC45LS45czcuMy4yIDEwLjkuOWMyLjIuNSA0LjMgMS4zIDYuMiAyLjNjLTIuMi0uMy00LjUtLjUtNi44LS41SDM0NS5zem0tMjQuNyA0MDQuNGMtMzkuNyAyLjEtODEuNy0xMC41LTExNC0zNC40Yy0xLjctLjctMy41LTEuNC01LjItMi4yYy0xOS4zIDguNS0zOS45IDEzLjEtNjAuOCAxMy4xcy00MS41LTQuNi02MC44LTEzLjFjLTEuNy44LTMuNSAxLjUtNS4yIDIuMmMtMzIuMyAyMy45LTc0LjMgMzYuNS0xMTQtMzQuNGM0LjUgMS4yIDguOSAxLjkgMTMuMyAyLjJjMzUuNSAxLjkgNzEuOS0yLjcgMTA0LjYtMTIuOGMxLjcuMyAzLjQuNyA1IDEuMWMyMC41IDQuOSA0MS44IDcuNCA2My4xIDcuNHM0Mi42LTIuNSA2My4xLTcuNGMxLjctLjQgMy40LS44IDUuMS0xLjFjMzIuNyAxMC4xIDY5LjEgMTQuNyAxMDQuNiAxMi44YzQuNC0uMyA4LjgtMSAxMy4zLTIuMnoiLz48L3N2Zz4=" alt="Google" />
               Sign up with Google
             </button>
             <button type="button" className={styles.socialButton}>

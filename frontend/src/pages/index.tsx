@@ -7,159 +7,6 @@ import PersonalizeButton from '../components/PersonalizeButton';
 const IndexPage = () => {
   return (
     <Layout title="Physical AI & Humanoid Robotics" description="Bridging digital AI and physical embodiment for humanoid robots">
-      {/* Custom Header for Index Page */}
-      <header
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
-          backgroundColor: 'rgba(15, 23, 42, 0.9)',
-          backdropFilter: 'blur(10px)',
-          padding: '1rem 2rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <div style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '8px',
-            backgroundColor: '#3b82f6',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'white',
-            fontWeight: 'bold',
-          }}>
-            🤖
-          </div>
-          <h1 style={{
-            margin: 0,
-            fontSize: '1.5rem',
-            fontWeight: '700',
-            background: 'linear-gradient(to right, #60a5fa, #38bdf8)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}>
-            🤖 Physical AI & Humanoid Robotics
-          </h1>
-        </div>
-
-        <nav>
-          <ul style={{
-            display: 'flex',
-            listStyle: 'none',
-            margin: 0,
-            padding: 0,
-            gap: '2rem',
-          }}>
-            <li>
-              <a
-                href="/docs/intro"
-                style={{
-                  color: 'white',
-                  textDecoration: 'none',
-                  fontWeight: '500',
-                  transition: 'color 0.3s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = '#38bdf8';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'white';
-                }}
-              >
-                📚 Textbook
-              </a>
-            </li>
-            <li>
-              <a
-                href="/blog"
-                style={{
-                  color: 'white',
-                  textDecoration: 'none',
-                  fontWeight: '500',
-                  transition: 'color 0.3s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = '#38bdf8';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'white';
-                }}
-              >
-                📰 Blog
-              </a>
-            </li>
-            <li>
-              <a
-                href="/signup"
-                style={{
-                  color: 'white',
-                  textDecoration: 'none',
-                  fontWeight: '500',
-                  transition: 'color 0.3s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = '#38bdf8';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'white';
-                }}
-              >
-                ✅ Sign Up
-              </a>
-            </li>
-            <li>
-              <a
-                href="/login"
-                style={{
-                  color: 'white',
-                  textDecoration: 'none',
-                  fontWeight: '500',
-                  transition: 'color 0.3s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = '#38bdf8';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'white';
-                }}
-              >
-                🔐 Login
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://github.com/physical-ai-humanoid-robotics/physical-ai-humanoid-robotics"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  color: 'white',
-                  textDecoration: 'none',
-                  fontWeight: '500',
-                  transition: 'color 0.3s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = '#38bdf8';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'white';
-                }}
-              >
-                🐙 GitHub
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </header>
-
       <div style={{
         margin: 0,
         padding: 0,
@@ -169,7 +16,6 @@ const IndexPage = () => {
         position: 'relative',
         overflow: 'hidden',
         color: 'white',
-        paddingTop: '100px' /* Add padding to account for fixed header */
       }}>
         {/* Elegant background pattern */}
         <div style={{
@@ -192,9 +38,9 @@ const IndexPage = () => {
           zIndex: 0
         }}></div>
 
-        {/* Header Section - Text on Left, Robot Image on Right */}
+        {/* Header Section - Robot Image on Top */}
         <header style={{
-          padding: '4rem 2rem 6rem',
+          padding: '2rem 2rem 4rem',
           position: 'relative',
           zIndex: 2,
           minHeight: '100vh',
@@ -213,21 +59,50 @@ const IndexPage = () => {
             zIndex: -1
           }}></div>
 
-          {/* Content container with flex layout - text on left, image on right */}
-          <div style={{
+          {/* Content container with vertical layout - image on top, text below */}
+          <div className="content-col" style={{
             maxWidth: '1200px',
             width: '100%',
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '3rem',
+            justifyContent: 'center',
+            gap: '2rem',
             padding: '0 2rem'
           }}>
-            {/* Text Content on Left */}
-            <div style={{
-              flex: 1,
+            {/* Robot Image on Top */}
+            <div className="content-image" style={{
               maxWidth: '600px',
-              textAlign: 'left'
+              maxHeight: '500px',
+              width: '100%',
+              borderRadius: '20px',
+              overflow: 'hidden',
+              position: 'relative',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '1rem'
+            }}>
+              {/* Robot image */}
+              <img
+                src="/robo.png"
+                alt="Advanced AI Robotic Companion representing the future of humanoid robotics"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  display: 'block',
+                  border: 'none',
+                  outline: 'none',
+                  boxShadow: 'none'
+                }}
+              />
+            </div>
+
+            {/* Text Content Below Image */}
+            <div className="content-left" style={{
+              textAlign: 'center',
+              maxWidth: '800px'
             }}>
               <h1 style={{
                 fontSize: '3.5rem',
@@ -310,14 +185,15 @@ const IndexPage = () => {
                 </p>
               </div>
 
-              <div style={{
+              <div className="cta-buttons" style={{
                 display: 'flex',
                 gap: '1.5rem',
                 flexWrap: 'wrap',
-                justifyContent: 'flex-start'
+                justifyContent: 'center'
               }}>
                 <a
                   href="/docs/intro"
+                  className="cta-button"
                   style={{
                     padding: '1rem 2rem',
                     backgroundColor: 'rgba(56, 189, 248, 0.2)',
@@ -330,7 +206,10 @@ const IndexPage = () => {
                     backdropFilter: 'blur(10px)',
                     transition: 'all 0.3s ease',
                     boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'translateY(-3px)';
@@ -347,6 +226,7 @@ const IndexPage = () => {
                 </a>
                 <a
                   href="/signup"
+                  className="cta-button"
                   style={{
                     padding: '1rem 2rem',
                     backgroundColor: 'rgba(16, 185, 129, 0.2)',
@@ -359,7 +239,10 @@ const IndexPage = () => {
                     backdropFilter: 'blur(10px)',
                     transition: 'all 0.3s ease',
                     boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = 'translateY(-3px)';
@@ -376,56 +259,11 @@ const IndexPage = () => {
                 </a>
               </div>
             </div>
-
-            {/* Robot Image on Right */}
-            <div style={{
-              flex: 1,
-              maxWidth: '700px',
-              height: '600px',
-              borderRadius: '20px',
-              overflow: 'hidden',
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-              position: 'relative',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              {/* Robot image */}
-              <img
-                src="/robo.png"
-                alt="AI Robotic Companion"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  display: 'block',
-                  border: 'none',
-                  outline: 'none',
-                  boxShadow: 'none'
-                }}
-              />
-
-              <div style={{
-                position: 'absolute',
-                bottom: '0',
-                left: '0',
-                right: '0',
-                background: 'linear-gradient(to top, rgba(15, 23, 42, 0.9) 0%, transparent 100%)',
-                padding: '1.2rem',
-                color: 'white',
-                textAlign: 'center',
-                fontWeight: '600',
-                fontSize: '1.2rem',
-                textShadow: '0 1px 3px rgba(0,0,0,0.8)'
-              }}>
-                Advanced AI-Powered Humanoid Robotics Platform
-              </div>
-            </div>
           </div>
         </header>
 
         {/* Features Section */}
-        <section style={{
+        <section className="section-padding" style={{
           padding: '6rem 2rem',
           position: 'relative',
           zIndex: 2,
@@ -449,12 +287,12 @@ const IndexPage = () => {
               Core Research Areas
             </h2>
 
-            <div style={{
+            <div className="features-grid" style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
               gap: '2.5rem'
             }}>
-              <div style={{
+              <div className="feature-card" style={{
                 backgroundColor: 'rgba(30, 41, 59, 0.7)',
                 borderRadius: '20px',
                 padding: '2.5rem',
@@ -488,7 +326,7 @@ const IndexPage = () => {
                       <path d="M4 15C4 15.5304 4.21071 16.0391 4.58579 16.4142C4.96086 16.7893 5.46957 17 6 17C6.53043 17 7.03914 16.7893 7.41421 16.4142C7.78929 16.0391 8 15.5304 8 15M4 15C4 14.4696 4.21071 13.9609 4.58579 13.5858C4.96086 13.2107 5.46957 13 6 13C6.53043 13 7.03914 13.2107 7.41421 13.5858C7.78929 13.9609 8 14.4696 8 15ZM20 15C20 15.5304 19.7893 16.0391 19.4142 16.4142C19.0391 16.7893 18.5304 17 18 17C17.4696 17 16.9609 16.7893 16.5858 16.4142C16.2107 16.0391 16 15.5304 16 15M20 15C20 14.4696 19.7893 13.9609 19.4142 13.5858C19.0391 13.2107 18.5304 13 18 13C17.4696 13 16.9609 13.2107 16.5858 13.5858C16.2107 13.9609 16 14.4696 16 15ZM12 4V12M12 12V20M12 12H16M12 12H8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
-                  <h3 style={{
+                  <h3 className="feature-title" style={{
                     fontSize: '1.75rem',
                     marginBottom: '1rem',
                     color: '#e0f2fe',
@@ -552,7 +390,7 @@ const IndexPage = () => {
                       <path d="M19.0001 14C19.0001 14.5 19.0001 15.5 19.0001 16C19.0001 19.866 15.866 23 12.0001 23C8.13413 23 5.00012 19.866 5.00012 16C5.00012 12.134 8.13413 9 12.0001 9C12.5001 9 13.5001 9 14.0001 9M21.0001 10C21.0001 8.34315 20.3432 6.75487 19.1821 5.5846C18.0209 4.41433 16.4391 3.7499 14.8001 3.7499C13.1611 3.7499 11.5793 4.41433 10.4182 5.5846C9.25707 6.75487 8.60013 8.34315 8.60013 10C8.60013 11.6569 9.25707 13.2451 10.4182 14.4154C11.5793 15.5857 13.1611 16.2501 14.8001 16.2501C16.4391 16.2501 18.0209 15.5857 19.1821 14.4154C20.3432 13.2451 21.0001 11.6569 21.0001 10Z" stroke="white" strokeWidth="2"/>
                     </svg>
                   </div>
-                  <h3 style={{
+                  <h3 className="feature-title" style={{
                     fontSize: '1.75rem',
                     marginBottom: '1rem',
                     color: '#e0f2fe',
@@ -581,7 +419,7 @@ const IndexPage = () => {
                 }}></div>
               </div>
 
-              <div style={{
+              <div className="feature-card" style={{
                 backgroundColor: 'rgba(30, 41, 59, 0.7)',
                 borderRadius: '20px',
                 padding: '2.5rem',
@@ -615,7 +453,7 @@ const IndexPage = () => {
                       <path d="M20 9V10C20 10.8856 19.7483 11.7345 19.292 12.457C18.8356 13.1795 18.1999 13.7421 17.4574 14.0803C16.7149 14.4186 15.8965 14.5185 15.0972 14.3677C14.2979 14.2168 13.552 13.8215 12.9502 13.22L12 12.2697M4 7H10L11.2697 8.26967C11.6191 8.61908 11.8303 9.08536 11.8678 9.5732C11.9053 10.061 11.7668 10.544 11.4777 10.9269L7.5 16H4V7ZM14 11L15.2697 12.2697C15.6191 12.6191 15.8303 13.0854 15.8678 13.5732C15.9053 14.061 15.7668 14.544 15.4777 14.9269L11.5 19H8V14M4 7L6.58579 9.58579C6.94672 9.94672 7.44377 10.1421 7.94975 10.1421C8.45573 10.1421 8.95279 9.94672 9.31371 9.58579L12 7" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
-                  <h3 style={{
+                  <h3 className="feature-title" style={{
                     fontSize: '1.75rem',
                     marginBottom: '1rem',
                     color: '#e0f2fe',
@@ -648,7 +486,7 @@ const IndexPage = () => {
         </section>
 
         {/* Interactive Section - with refined styling */}
-        <section style={{
+        <section className="section-padding" style={{
           padding: '6rem 2rem',
           position: 'relative',
           zIndex: 2,
@@ -705,7 +543,7 @@ const IndexPage = () => {
         </section>
 
         {/* CTA Section */}
-        <section style={{
+        <section className="section-padding" style={{
           padding: '6rem 2rem',
           position: 'relative',
           zIndex: 2,

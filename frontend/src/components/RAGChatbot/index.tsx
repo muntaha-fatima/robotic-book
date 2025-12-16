@@ -32,15 +32,17 @@ interface RAGChatbotProps {
   onNavigateToSignup?: () => void;
   onNavigateToLogout?: () => void;
   isModal?: boolean; // New prop to indicate if the chatbot is in a modal
+  showHeader?: boolean; // Prop to optionally hide the header
 }
 
 const RAGChatbot: React.FC<RAGChatbotProps> = ({
   onNavigateToLogin,
   onNavigateToSignup,
   onNavigateToLogout,
-  isModal = false
+  isModal = false,
+  showHeader = true
 }) => {
-  const [messages, setMessages] = useState<{ text: string; sender: string }[]>([
+  const [messages, setMessages] = useState<{ text: string; sender: string }[]>(() => [
     { text: "Hello! I'm your RAG Chatbot for robotics. You can ask me questions about robotics, AI, and related topics. Sign up and log in to get full access to the chatbot!", sender: 'bot' }
   ]);
   const [input, setInput] = useState('');
@@ -53,7 +55,7 @@ const RAGChatbot: React.FC<RAGChatbotProps> = ({
   // Use window.env or a global config if available, otherwise fallback
   const backendUrl =
     (typeof window !== 'undefined' && (window as any).env?.REACT_APP_BACKEND_URL) ||
-    'http://localhost:8000';
+    'http://localhost:8001';
 
   // Check authentication status on component mount
   useEffect(() => {
@@ -208,41 +210,43 @@ const RAGChatbot: React.FC<RAGChatbotProps> = ({
 
   return (
     <div className={styles.chatbotContainer}>
-      <div className={styles.header}>
-        <h2>🤖 Robotics Assistant</h2>
-        <div className={styles.authButtons}>
-          {isAuthenticated ? (
-            <button onClick={handleLogout} className={styles.logoutButton}>Logout</button>
-          ) : (
-            <>
-              <button
-                onClick={() => {
-                  if (isModal && onNavigateToSignup) {
-                    onNavigateToSignup();
-                  } else {
-                    window.location.href = '/signup';
-                  }
-                }}
-                className={styles.signupButton}
-              >
-                Sign Up
-              </button>
-              <button
-                onClick={() => {
-                  if (isModal && onNavigateToLogin) {
-                    onNavigateToLogin();
-                  } else {
-                    window.location.href = '/login';
-                  }
-                }}
-                className={styles.loginButton}
-              >
-                Login
-              </button>
-            </>
-          )}
+      {showHeader && (
+        <div className={styles.header}>
+          <h2>🤖 Robotics Assistant</h2>
+          <div className={styles.authButtons}>
+            {isAuthenticated ? (
+              <button onClick={handleLogout} className={styles.logoutButton}>Logout</button>
+            ) : (
+              <>
+                <button
+                  onClick={() => {
+                    if (isModal && onNavigateToSignup) {
+                      onNavigateToSignup();
+                    } else {
+                      window.location.href = '/signup';
+                    }
+                  }}
+                  className={styles.signupButton}
+                >
+                  Sign Up
+                </button>
+                <button
+                  onClick={() => {
+                    if (isModal && onNavigateToLogin) {
+                      onNavigateToLogin();
+                    } else {
+                      window.location.href = '/login';
+                    }
+                  }}
+                  className={styles.loginButton}
+                >
+                  Login
+                </button>
+              </>
+            )}
+          </div>
         </div>
-      </div>
+      )}
       <div ref={messageListRef} className={styles.messageList}>
         {messages.map((message, index) => (
           <div key={index} className={`${styles.message} ${styles[message.sender]}`}>

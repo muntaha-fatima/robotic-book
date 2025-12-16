@@ -7,7 +7,8 @@ from dotenv import load_dotenv
 from auth import signup_user, login_user, get_current_user
 from database import get_db_connection
 from utils import get_cohere_embedder
-from models import SignUpRequest, LoginRequest, UpsertRequest, RagQueryRequest, RagResponse, Source
+from models import SignUpRequest, LoginRequest, UpsertRequest, RagQueryRequest, RagResponse, Source, URLUpsertRequest, DocumentUpsertRequest
+from document_loaders import DocumentLoader
 
 load_dotenv()
 
@@ -19,7 +20,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",  # React development server
-        "http://localhost:8000",  # Backend itself
+        "http://localhost:3001",  # React development server
+        "http://localhost:8001",  # Backend itself
         "http://127.0.0.1:3000",
         "http://127.0.0.1:8000",
         # Add your production domain here in production
@@ -58,33 +60,49 @@ def initialize_clients():
     # Initialize Qdrant client with error handling
     try:
         if qdrant_url and qdrant_api_key:
+            # Try to connect with additional parameters that might help with Cloud setup
             qdrant_client = QdrantClient(
                 url=qdrant_url,
                 api_key=qdrant_api_key,
+                # Add timeout and verify SSL for better connection handling
+                timeout=10,
             )
             print("Successfully connected to Qdrant")
         else:
             print("ERROR: Missing QDRANT_URL or QDRANT_API_KEY in environment variables")
+            qdrant_client = None
     except Exception as e:
         print(f"Error connecting to Qdrant: {e}")
         qdrant_client = None
 
     # Initialize Qdrant collection
     if qdrant_client:
-        collection_name = "robotics-book"
+        collection_name = "robotic-chat"
         try:
-            # Test Cohere to get embedding size
-            embedder = get_cohere_embedder()
-            test_embedding = embedder.embed_text("test", input_type="search_document")
-            embedding_size = len(test_embedding)
+            # Check if collection exists first
+            try:
+                collection_info = qdrant_client.get_collection(collection_name=collection_name)
+                print("Qdrant collection already exists, skipping creation")
+            except Exception as get_error:
+                print(f"Collection doesn't exist or can't be accessed: {get_error}")
+                # If collection doesn't exist, try to create it
+                try:
+                    # Test Cohere to get embedding size
+                    embedder = get_cohere_embedder()
+                    test_embedding = embedder.embed_text("test", input_type="search_document")
+                    embedding_size = len(test_embedding)
 
-            qdrant_client.recreate_collection(
-                collection_name=collection_name,
-                vectors_config=models.VectorParams(size=embedding_size, distance=models.Distance.COSINE),
-            )
-            print("Qdrant collection created/recreated successfully")
+                    qdrant_client.create_collection(
+                        collection_name=collection_name,
+                        vectors_config=models.VectorParams(size=embedding_size, distance=models.Distance.COSINE),
+                    )
+                    print("Qdrant collection created successfully")
+                except Exception as create_error:
+                    print(f"Could not create collection: {create_error}")
+                    print("Note: The system will continue but may have issues with vector storage.")
         except Exception as e:
-            print(f"Error creating Qdrant collection: {e}")
+            print(f"Error initializing Qdrant collection: {e}")
+            print("Note: This may be due to insufficient permissions. The system will continue but may have issues with vector storage.")
 
     return qdrant_client is not None
 
@@ -161,7 +179,15 @@ async def upsert_embeddings(request: UpsertRequest, current_user: dict = Depends
         return {"status": "success"}
     except Exception as e:
         print(f"Embedding upsert error: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Failed to upsert embeddings: {str(e)}")
+        # Provide more specific error message based on the type of error
+        error_msg = str(e)
+        if "forbidden" in error_msg.lower() or "403" in error_msg:
+            raise HTTPException(
+                status_code=500,
+                detail="Qdrant access forbidden. Please check your QDRANT_API_KEY permissions or collection access rights."
+            )
+        else:
+            raise HTTPException(status_code=500, detail=f"Failed to upsert embeddings: {str(e)}")
 
 @app.post("/rag/query", response_model=RagResponse)
 async def rag_query_endpoint(request: RagQueryRequest, current_user: dict = Depends(get_current_user)):
@@ -174,15 +200,9 @@ async def rag_query_endpoint(request: RagQueryRequest, current_user: dict = Depe
         embedder = get_cohere_embedder()
         query_embedding = embedder.embed_query(request.query)
 
-        # Perform vector search in Qdrant - check for newer API first
+        # Perform vector search in Qdrant - handle different Qdrant client versions
         try:
-            search_results = qdrant_client.search(
-                collection_name=collection_name,
-                query_vector=query_embedding,
-                limit=3,
-            )
-        except AttributeError:
-            # Newer Qdrant client versions use query_points
+            # Try the newer query_points method first (Qdrant 1.9.0+)
             search_results = qdrant_client.query_points(
                 collection_name=collection_name,
                 query=query_embedding,
@@ -191,15 +211,23 @@ async def rag_query_endpoint(request: RagQueryRequest, current_user: dict = Depe
             # Handle QueryResponse object if needed
             if hasattr(search_results, 'points'):
                 search_results = search_results.points
+        except (AttributeError, TypeError):
+            # Fallback to search method for older Qdrant versions
+            search_results = qdrant_client.search(
+                collection_name=collection_name,
+                query_vector=query_embedding,
+                limit=3,
+            )
 
         # Extract context from search results
         context = " ".join([result.payload["text"] for result in search_results])
 
-        # Create source objects
+        # Create source objects with metadata
         sources = [
             Source(
                 text=result.payload["text"],
-                score=result.score
+                score=result.score,
+                metadata={k: v for k, v in result.payload.items() if k != "text"}
             ) for result in search_results
         ]
 
@@ -211,7 +239,14 @@ async def rag_query_endpoint(request: RagQueryRequest, current_user: dict = Depe
         )
     except Exception as e:
         print(f"RAG query error: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Failed to process RAG query: {str(e)}")
+        error_msg = str(e)
+        if "forbidden" in error_msg.lower() or "403" in error_msg:
+            raise HTTPException(
+                status_code=500,
+                detail="Qdrant access forbidden. Please check your QDRANT_API_KEY permissions or collection access rights."
+            )
+        else:
+            raise HTTPException(status_code=500, detail=f"Failed to process RAG query: {str(e)}")
 
 # Add a chat endpoint that uses the RAG context to generate responses
 class ChatRequest(RagQueryRequest):
@@ -235,15 +270,9 @@ async def chat_endpoint(request: ChatRequest, current_user: dict = Depends(get_c
         query_embedding = embedder.embed_query(request.query)
         print(f"Query embedding generated, length: {len(query_embedding)}")
 
-        # Perform vector search in Qdrant - check for newer API first
+        # Perform vector search in Qdrant - handle different Qdrant client versions
         try:
-            search_results = qdrant_client.search(
-                collection_name=collection_name,
-                query_vector=query_embedding,
-                limit=3,
-            )
-        except AttributeError:
-            # Newer Qdrant client versions use query_points
+            # Try the newer query_points method first (Qdrant 1.9.0+)
             search_results = qdrant_client.query_points(
                 collection_name=collection_name,
                 query=query_embedding,
@@ -252,6 +281,13 @@ async def chat_endpoint(request: ChatRequest, current_user: dict = Depends(get_c
             # Handle QueryResponse object if needed
             if hasattr(search_results, 'points'):
                 search_results = search_results.points
+        except (AttributeError, TypeError):
+            # Fallback to search method for older Qdrant versions
+            search_results = qdrant_client.search(
+                collection_name=collection_name,
+                query_vector=query_embedding,
+                limit=3,
+            )
 
         print(f"Qdrant search completed, found {len(search_results)} results")
 
@@ -284,7 +320,8 @@ async def chat_endpoint(request: ChatRequest, current_user: dict = Depends(get_c
             "sources": [
                 {
                     "text": result.payload["text"],
-                    "score": result.score
+                    "score": result.score,
+                    "metadata": {k: v for k, v in result.payload.items() if k != "text"}
                 } for result in search_results
             ]
         }
@@ -292,9 +329,141 @@ async def chat_endpoint(request: ChatRequest, current_user: dict = Depends(get_c
         print(f"Chat error: {str(e)}")
         import traceback
         traceback.print_exc()
-        raise HTTPException(status_code=500, detail=f"Failed to process chat query: {str(e)}")
+        error_msg = str(e)
+        if "forbidden" in error_msg.lower() or "403" in error_msg:
+            raise HTTPException(
+                status_code=500,
+                detail="Qdrant access forbidden. Please check your QDRANT_API_KEY permissions or collection access rights."
+            )
+        else:
+            raise HTTPException(status_code=500, detail=f"Failed to process chat query: {str(e)}")
+
+@app.post("/documents/load-from-url", tags=["documents"])
+async def load_documents_from_url(request: URLUpsertRequest, current_user: dict = Depends(get_current_user)):
+    if not qdrant_client:
+        raise HTTPException(status_code=500, detail="Qdrant client not initialized. Check your QDRANT_URL and QDRANT_API_KEY in .env file.")
+
+    try:
+        # Load content from URL
+        content = DocumentLoader.load_from_url(request.url)
+
+        # Chunk the content
+        chunks = DocumentLoader.chunk_text(content, request.chunk_size, request.chunk_overlap)
+
+        # Process each chunk and store in Qdrant
+        embedder = get_cohere_embedder()
+        processed_chunks = 0
+
+        for i, chunk in enumerate(chunks):
+            if chunk.strip():  # Only process non-empty chunks
+                # Generate embedding using Cohere
+                embedding = embedder.embed_text(chunk, input_type="search_document")
+
+                collection_name = "robotics-book"
+                try:
+                    qdrant_client.upsert(
+                        collection_name=collection_name,
+                        points=[
+                            models.PointStruct(
+                                id=abs(hash(f"{request.url}_{i}_{chunk[:50]}")) % (10**16),  # Ensure unique ID
+                                vector=embedding,
+                                payload={
+                                    "text": chunk,
+                                    "user": current_user['username'],
+                                    "source_url": request.url,
+                                    "chunk_index": i
+                                }
+                            )
+                        ],
+                        wait=True,
+                    )
+                except Exception as e:
+                    print(f"Error upserting chunk {i}: {str(e)}")
+                    # Re-raise the exception to handle it properly
+                    raise
+                processed_chunks += 1
+
+        return {
+            "status": "success",
+            "chunks_processed": processed_chunks,
+            "url": request.url,
+            "total_chunks": len(chunks)
+        }
+    except Exception as e:
+        print(f"URL document loading error: {str(e)}")
+        error_msg = str(e)
+        if "forbidden" in error_msg.lower() or "403" in error_msg:
+            raise HTTPException(
+                status_code=500,
+                detail="Qdrant access forbidden. Please check your QDRANT_API_KEY permissions or collection access rights."
+            )
+        else:
+            raise HTTPException(status_code=500, detail=f"Failed to load documents from URL: {str(e)}")
+
+
+@app.post("/documents/upsert", tags=["documents"])
+async def upsert_documents(request: DocumentUpsertRequest, current_user: dict = Depends(get_current_user)):
+    if not qdrant_client:
+        raise HTTPException(status_code=500, detail="Qdrant client not initialized. Check your QDRANT_URL and QDRANT_API_KEY in .env file.")
+
+    try:
+        # Chunk the content
+        chunks = DocumentLoader.chunk_text(request.content, request.chunk_size, request.chunk_overlap)
+
+        # Process each chunk and store in Qdrant
+        embedder = get_cohere_embedder()
+        processed_chunks = 0
+
+        for i, chunk in enumerate(chunks):
+            if chunk.strip():  # Only process non-empty chunks
+                # Generate embedding using Cohere
+                embedding = embedder.embed_text(chunk, input_type="search_document")
+
+                collection_name = "robotics-book"
+                try:
+                    qdrant_client.upsert(
+                        collection_name=collection_name,
+                        points=[
+                            models.PointStruct(
+                                id=abs(hash(f"{request.source_url or 'text'}_{i}_{chunk[:50]}")) % (10**16),  # Ensure unique ID
+                                vector=embedding,
+                                payload={
+                                    "text": chunk,
+                                    "user": current_user['username'],
+                                    "source_type": request.source_type,
+                                    "source_url": request.source_url,
+                                    "chunk_index": i
+                                }
+                            )
+                        ],
+                        wait=True,
+                    )
+                except Exception as e:
+                    print(f"Error upserting chunk {i}: {str(e)}")
+                    # Re-raise the exception to handle it properly
+                    raise
+                processed_chunks += 1
+
+        return {
+            "status": "success",
+            "chunks_processed": processed_chunks,
+            "source_type": request.source_type,
+            "source_url": request.source_url,
+            "total_chunks": len(chunks)
+        }
+    except Exception as e:
+        print(f"Document upsert error: {str(e)}")
+        error_msg = str(e)
+        if "forbidden" in error_msg.lower() or "403" in error_msg:
+            raise HTTPException(
+                status_code=500,
+                detail="Qdrant access forbidden. Please check your QDRANT_API_KEY permissions or collection access rights."
+            )
+        else:
+            raise HTTPException(status_code=500, detail=f"Failed to upsert documents: {str(e)}")
+
 
 # Server startup
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8002)

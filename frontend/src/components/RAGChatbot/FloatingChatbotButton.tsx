@@ -48,7 +48,7 @@ const FloatingChatbotButton: React.FC = () => {
       return (
         <div className={styles.fullScreenContainer}>
           <div className={styles.mobileHeader}>
-            <h3>🤖 Robotics Assistant</h3>
+            <h3>🤖 RAG Chatbot</h3>
             <button
               onClick={toggleChatbot}
               className={styles.closeButton}
@@ -63,6 +63,7 @@ const FloatingChatbotButton: React.FC = () => {
               onNavigateToSignup={handleNavigateToSignup}
               onNavigateToLogout={handleNavigateToLogout}
               isModal={true}
+              showHeader={false}
             />
           </div>
         </div>
@@ -76,7 +77,7 @@ const FloatingChatbotButton: React.FC = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className={styles.modalHeader}>
-              <h3>🤖 Robotics Assistant</h3>
+              <h3>🤖 RAG Chatbot</h3>
               <button
                 onClick={toggleChatbot}
                 className={styles.closeButton}
@@ -91,6 +92,7 @@ const FloatingChatbotButton: React.FC = () => {
                 onNavigateToSignup={handleNavigateToSignup}
                 onNavigateToLogout={handleNavigateToLogout}
                 isModal={true}
+                showHeader={false}
               />
             </div>
           </div>
